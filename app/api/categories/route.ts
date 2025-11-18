@@ -30,6 +30,13 @@ export async function GET(request: NextRequest) {
 // POST - создать категорию (только для админа)
 export async function POST(request: NextRequest) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена' },
+        { status: 503 }
+      )
+    }
+
     const body = await request.json()
     const { name, slug, description, image, parentId } = body
 

@@ -4,6 +4,7 @@ import { X, Plus, Minus, Trash2 } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { formatPrice } from '@/lib/utils'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
 interface CartModalProps {
@@ -68,11 +69,15 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                         className="flex items-center gap-4 p-4 bg-dark-200 rounded-lg"
                       >
                         {item.image && (
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-16 h-16 object-cover rounded"
-                          />
+                          <div className="relative w-16 h-16 flex-shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              unoptimized
+                              className="object-cover rounded"
+                            />
+                          </div>
                         )}
                         <div className="flex-1">
                           <h3 className="font-medium text-white mb-1">
