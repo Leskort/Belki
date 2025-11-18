@@ -52,7 +52,7 @@ export default function LoginPage() {
           className="bg-dark-200 rounded-lg p-8 border border-dark-300 space-y-6"
         >
           {error && (
-            <div className="bg-blood-200/20 border border-blood-50 text-blood-50 rounded-lg p-4 flex items-center gap-2">
+            <div className="bg-neon-200/20 border border-neon-50 text-neon-50 rounded-lg p-4 flex items-center gap-2">
               <AlertCircle className="w-5 h-5" />
               <span>{error}</span>
             </div>
@@ -73,7 +73,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-3 bg-dark-300 border border-dark-400 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blood-50 transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-dark-300 border border-dark-400 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-50 transition-colors"
                 placeholder="admin@elki.by"
               />
             </div>
@@ -94,7 +94,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full pl-10 pr-4 py-3 bg-dark-300 border border-dark-400 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blood-50 transition-colors"
+                className="w-full pl-10 pr-4 py-3 bg-dark-300 border border-dark-400 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-50 transition-colors"
                 placeholder="••••••••"
               />
             </div>

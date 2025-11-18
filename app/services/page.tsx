@@ -53,7 +53,7 @@ export default function ServicesPage() {
             return (
               <div
                 key={index}
-                className="bg-dark-200 rounded-lg p-8 border border-dark-300 hover:border-blood-50/50 transition-colors"
+                className="bg-dark-200 rounded-lg p-8 border border-dark-300 hover:border-neon-50/50 transition-colors"
               >
                 <Icon className="w-12 h-12 mb-4 text-forest-50" />
                 <h3 className="text-2xl font-bold text-white mb-3">
@@ -62,7 +62,7 @@ export default function ServicesPage() {
                 <p className="text-gray-300 mb-4 leading-relaxed">
                   {service.description}
                 </p>
-                <div className="text-xl font-bold text-blood-50 horror-text">
+                <div className="text-xl font-bold text-neon-50 horror-text">
                   {service.price}
                 </div>
               </div>

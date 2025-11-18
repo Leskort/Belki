@@ -48,7 +48,7 @@ export function ProductsPreview() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="group bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-blood-50/50 transition-colors"
+          className="group bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-colors"
         >
           <Link href={`/catalog/${product.slug}`}>
             <div className="relative h-64 bg-dark-300 overflow-hidden">
@@ -66,7 +66,7 @@ export function ProductsPreview() {
                 </div>
               )}
               {!product.inStock && (
-                <div className="absolute top-4 right-4 bg-blood-200 text-white px-3 py-1 rounded text-sm font-medium">
+                <div className="absolute top-4 right-4 bg-neon-200 text-white px-3 py-1 rounded text-sm font-medium">
                   Нет в наличии
                 </div>
               )}
@@ -74,12 +74,12 @@ export function ProductsPreview() {
           </Link>
           <div className="p-4">
             <Link href={`/catalog/${product.slug}`}>
-              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-blood-50 transition-colors">
+              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-neon-50 transition-colors">
                 {product.name}
               </h3>
             </Link>
             <div className="flex items-center justify-between">
-              <span className="text-xl font-bold text-blood-50 horror-text">
+              <span className="text-xl font-bold text-neon-50 horror-text">
                 {formatPrice(product.price)}
               </span>
               <button
@@ -94,7 +94,7 @@ export function ProductsPreview() {
                   })
                 }
                 disabled={!product.inStock}
-                className="p-2 bg-blood-50 text-white rounded-lg hover:bg-blood-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed horror-glow"
+                className="p-2 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed horror-glow"
                 aria-label="Добавить в корзину"
               >
                 <ShoppingCart className="w-5 h-5" />

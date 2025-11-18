@@ -18,7 +18,7 @@ export default function Error({
   return (
     <div className="min-h-screen flex items-center justify-center bg-dark-50">
       <div className="text-center space-y-6 p-8">
-        <AlertTriangle className="w-16 h-16 mx-auto text-blood-50 horror-glow" />
+        <AlertTriangle className="w-16 h-16 mx-auto text-neon-50 horror-glow" />
         <h1 className="text-4xl font-bold horror-text">
           Что-то пошло не так...
         </h1>
@@ -28,7 +28,7 @@ export default function Error({
         <div className="flex gap-4 justify-center">
           <button
             onClick={reset}
-            className="px-6 py-3 bg-blood-50 text-white rounded-lg hover:bg-blood-100 transition-colors horror-glow"
+            className="px-6 py-3 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors horror-glow"
           >
             Попробовать снова
           </button>

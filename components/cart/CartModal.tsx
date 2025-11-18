@@ -42,7 +42,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                 <h2 className="text-2xl font-bold horror-text">Корзина</h2>
                 <button
                   onClick={onClose}
-                  className="text-gray-400 hover:text-blood-50 transition-colors"
+                  className="text-gray-400 hover:text-neon-50 transition-colors"
                   aria-label="Закрыть"
                 >
                   <X className="w-6 h-6" />
@@ -87,7 +87,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity - 1)
                             }
-                            className="p-1 text-gray-400 hover:text-blood-50 transition-colors"
+                            className="p-1 text-gray-400 hover:text-neon-50 transition-colors"
                             aria-label="Уменьшить"
                           >
                             <Minus className="w-4 h-4" />
@@ -99,14 +99,14 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                             onClick={() =>
                               updateQuantity(item.id, item.quantity + 1)
                             }
-                            className="p-1 text-gray-400 hover:text-blood-50 transition-colors"
+                            className="p-1 text-gray-400 hover:text-neon-50 transition-colors"
                             aria-label="Увеличить"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => removeItem(item.id)}
-                            className="p-1 text-gray-400 hover:text-blood-50 transition-colors ml-2"
+                            className="p-1 text-gray-400 hover:text-neon-50 transition-colors ml-2"
                             aria-label="Удалить"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -120,7 +120,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                   <div className="border-t border-dark-300 pt-4 mb-4">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-lg font-bold text-white">Итого:</span>
-                      <span className="text-xl font-bold text-blood-50 horror-text">
+                      <span className="text-xl font-bold text-neon-50 horror-text">
                         {formatPrice(total)}
                       </span>
                     </div>
@@ -128,7 +128,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                       <Link
                         href="/cart"
                         onClick={onClose}
-                        className="flex-1 px-4 py-3 bg-blood-50 text-white rounded-lg hover:bg-blood-100 transition-colors text-center font-medium horror-glow"
+                        className="flex-1 px-4 py-3 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors text-center font-medium horror-glow"
                       >
                         Оформить заказ
                       </Link>

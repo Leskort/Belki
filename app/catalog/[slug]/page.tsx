@@ -81,7 +81,7 @@ export default function ProductPage() {
       <div className="max-w-7xl mx-auto">
         <Link
           href="/catalog"
-          className="inline-flex items-center gap-2 text-gray-400 hover:text-blood-50 transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-gray-400 hover:text-neon-50 transition-colors mb-8"
         >
           <ArrowLeft className="w-5 h-5" />
           Назад в каталог
@@ -142,7 +142,7 @@ export default function ProductPage() {
               <h1 className="text-4xl font-bold mb-4 horror-text">
                 {product.name}
               </h1>
-              <div className="text-3xl font-bold text-blood-50 horror-text mb-6">
+              <div className="text-3xl font-bold text-neon-50 horror-text mb-6">
                 {formatPrice(product.price)}
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function ProductPage() {
                       slug: product.slug,
                     })
                   }
-                  className="w-full px-6 py-4 bg-blood-50 text-white rounded-lg hover:bg-blood-100 transition-colors font-medium flex items-center justify-center gap-2 horror-glow"
+                  className="w-full px-6 py-4 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors font-medium flex items-center justify-center gap-2 horror-glow"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   Добавить в корзину

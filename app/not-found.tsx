@@ -15,7 +15,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="inline-block px-8 py-4 bg-blood-50 text-white rounded-lg hover:bg-blood-100 transition-colors horror-glow"
+          className="inline-block px-8 py-4 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors horror-glow"
         >
           Вернуться в магазин
         </Link>

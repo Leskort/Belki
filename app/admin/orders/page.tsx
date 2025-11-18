@@ -130,7 +130,7 @@ export default function AdminOrdersPage() {
 
               <div className="flex justify-between items-center pt-4 border-t border-dark-300">
                 <span className="text-lg font-bold text-white">Итого:</span>
-                <span className="text-xl font-bold text-blood-50 horror-text">
+                <span className="text-xl font-bold text-neon-50 horror-text">
                   {formatPrice(order.total)}
                 </span>
               </div>

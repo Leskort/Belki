@@ -10,9 +10,25 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark-100 to-dark-50 opacity-50" />
-        <div className="relative max-w-7xl mx-auto text-center">
+      <section className="relative py-20 px-4 overflow-hidden min-h-screen flex items-center">
+        {/* Background Video */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-30"
+          >
+            <source src="/videos/forest-background.mp4" type="video/mp4" />
+            {/* Fallback для браузеров без поддержки видео */}
+            <div className="absolute inset-0 bg-gradient-to-b from-dark-100 to-dark-50" />
+          </video>
+          {/* Overlay для затемнения */}
+          <div className="absolute inset-0 bg-gradient-to-b from-dark-100/80 via-dark-50/60 to-dark-50/80" />
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto text-center z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -48,7 +64,7 @@ export default function HomePage() {
       <section className="py-16 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4 horror-text">
+            <h2 className="text-4xl font-bold mb-4 horror-text text-neon-50">
               Популярные товары
             </h2>
             <p className="text-gray-400 text-lg">
@@ -72,7 +88,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center p-6 bg-dark-200 rounded-lg border border-dark-300">
-              <TreePine className="w-12 h-12 mx-auto mb-4 text-forest-50" />
+              <TreePine className="w-12 h-12 mx-auto mb-4 text-neon-50 neon-glow" />
               <h3 className="text-xl font-bold mb-2 text-white">
                 Свежие ёлки
               </h3>
@@ -81,7 +97,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="text-center p-6 bg-dark-200 rounded-lg border border-dark-300">
-              <TreePine className="w-12 h-12 mx-auto mb-4 text-forest-50" />
+              <TreePine className="w-12 h-12 mx-auto mb-4 text-neon-50 neon-glow" />
               <h3 className="text-xl font-bold mb-2 text-white">
                 Быстрая доставка
               </h3>
@@ -90,7 +106,7 @@ export default function HomePage() {
               </p>
             </div>
             <div className="text-center p-6 bg-dark-200 rounded-lg border border-dark-300">
-              <TreePine className="w-12 h-12 mx-auto mb-4 text-forest-50" />
+              <TreePine className="w-12 h-12 mx-auto mb-4 text-neon-50 neon-glow" />
               <h3 className="text-xl font-bold mb-2 text-white">
                 Установка и утилизация
               </h3>

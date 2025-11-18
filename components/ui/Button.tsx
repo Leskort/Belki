@@ -13,9 +13,9 @@ export function Button({
   ...props
 }: ButtonProps) {
   const variants = {
-    primary: 'bg-blood-50 text-white hover:bg-blood-100 horror-glow',
+    primary: 'bg-neon-50 text-dark-50 hover:bg-neon-100 neon-glow font-bold',
     secondary: 'bg-dark-200 text-white hover:bg-dark-300',
-    outline: 'border border-blood-50 text-blood-50 hover:bg-blood-50/10',
+    outline: 'border border-neon-50 text-neon-50 hover:bg-neon-50/10',
   }
 
   return (

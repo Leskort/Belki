@@ -23,7 +23,7 @@ export function ProductFilters({
         onClick={() => onCategoryChange(null)}
         className={`px-4 py-2 rounded-lg font-medium transition-colors ${
           selectedCategory === null
-            ? 'bg-blood-50 text-white horror-glow'
+            ? 'bg-neon-50 text-white horror-glow'
             : 'bg-dark-200 text-gray-300 hover:bg-dark-300'
         }`}
       >
@@ -35,7 +35,7 @@ export function ProductFilters({
           onClick={() => onCategoryChange(category.slug)}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             selectedCategory === category.slug
-              ? 'bg-blood-50 text-white horror-glow'
+              ? 'bg-neon-50 text-white horror-glow'
               : 'bg-dark-200 text-gray-300 hover:bg-dark-300'
           }`}
         >

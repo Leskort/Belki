@@ -93,14 +93,14 @@ export default function CartPage() {
                   <h3 className="text-lg font-bold text-white mb-2">
                     {item.name}
                   </h3>
-                  <p className="text-blood-50 font-bold mb-4">
+                  <p className="text-neon-50 font-bold mb-4">
                     {formatPrice(item.price)}
                   </p>
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="p-1 text-gray-400 hover:text-blood-50 transition-colors"
+                        className="p-1 text-gray-400 hover:text-neon-50 transition-colors"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
@@ -109,21 +109,21 @@ export default function CartPage() {
                       </span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="p-1 text-gray-400 hover:text-blood-50 transition-colors"
+                        className="p-1 text-gray-400 hover:text-neon-50 transition-colors"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
                     </div>
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="p-2 text-gray-400 hover:text-blood-50 transition-colors"
+                      className="p-2 text-gray-400 hover:text-neon-50 transition-colors"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-xl font-bold text-blood-50 horror-text">
+                  <p className="text-xl font-bold text-neon-50 horror-text">
                     {formatPrice(item.price * item.quantity)}
                   </p>
                 </div>
@@ -150,7 +150,7 @@ export default function CartPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, customerName: e.target.value })
                     }
-                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-blood-50 transition-colors"
+                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-neon-50 transition-colors"
                   />
                 </div>
 
@@ -165,7 +165,7 @@ export default function CartPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, customerEmail: e.target.value })
                     }
-                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-blood-50 transition-colors"
+                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-neon-50 transition-colors"
                   />
                 </div>
 
@@ -180,7 +180,7 @@ export default function CartPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, customerPhone: e.target.value })
                     }
-                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-blood-50 transition-colors"
+                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-neon-50 transition-colors"
                   />
                 </div>
 
@@ -195,14 +195,14 @@ export default function CartPage() {
                       setFormData({ ...formData, address: e.target.value })
                     }
                     rows={3}
-                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-blood-50 transition-colors resize-none"
+                    className="w-full px-4 py-2 bg-dark-300 border border-dark-400 rounded-lg text-white focus:outline-none focus:border-neon-50 transition-colors resize-none"
                   />
                 </div>
 
                 <div className="pt-4 border-t border-dark-300">
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-lg font-bold text-white">Итого:</span>
-                    <span className="text-2xl font-bold text-blood-50 horror-text">
+                    <span className="text-2xl font-bold text-neon-50 horror-text">
                       {formatPrice(total)}
                     </span>
                   </div>

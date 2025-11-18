@@ -37,9 +37,9 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'text-sm font-medium transition-colors hover:text-blood-50',
+                  'text-sm font-medium transition-colors hover:text-neon-50',
                   pathname === link.href
-                    ? 'text-blood-50 horror-text'
+                    ? 'text-neon-50 horror-text'
                     : 'text-gray-300'
                 )}
               >
@@ -53,7 +53,7 @@ export function Navbar() {
             <CartIcon />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-gray-300 hover:text-blood-50 transition-colors"
+              className="md:hidden text-gray-300 hover:text-neon-50 transition-colors"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -75,9 +75,9 @@ export function Navbar() {
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-blood-50 px-2 py-1',
+                    'text-sm font-medium transition-colors hover:text-neon-50 px-2 py-1',
                     pathname === link.href
-                      ? 'text-blood-50 horror-text'
+                      ? 'text-neon-50 horror-text'
                       : 'text-gray-300'
                   )}
                 >

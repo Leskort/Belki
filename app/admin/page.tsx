@@ -59,7 +59,7 @@ export default async function AdminDashboard() {
         {statCards.map((stat) => {
           const Icon = stat.icon
           const CardContent = (
-            <div className="bg-dark-200 rounded-lg p-6 border border-dark-300 hover:border-blood-50/50 transition-colors">
+            <div className="bg-dark-200 rounded-lg p-6 border border-dark-300 hover:border-neon-50/50 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <Icon className={`w-8 h-8 ${stat.color}`} />
               </div>
