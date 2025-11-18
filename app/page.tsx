@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section с полноэкранным видео */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden -mt-20">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ marginTop: '-80px', paddingTop: '80px' }}>
         {/* Fullscreen Background Video */}
         <div className="absolute inset-0 w-full h-full z-0">
           <video
