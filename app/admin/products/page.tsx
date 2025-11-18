@@ -109,6 +109,7 @@ export default function AdminProductsPage() {
                           src={product.image}
                           alt={product.name}
                           fill
+                          unoptimized
                           className="object-cover rounded"
                         />
                       </div>

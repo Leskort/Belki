@@ -57,6 +57,7 @@ export function ProductsPreview() {
                   src={product.image}
                   alt={product.name}
                   fill
+                  unoptimized
                   className="object-cover group-hover:scale-110 transition-transform duration-300"
                 />
               ) : (

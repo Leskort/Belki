@@ -100,6 +100,7 @@ export default function ProductPage() {
                   src={images[0]}
                   alt={product.name}
                   fill
+                  unoptimized
                   className="object-cover"
                 />
               ) : (
@@ -119,6 +120,7 @@ export default function ProductPage() {
                       src={img}
                       alt={`${product.name} ${index + 2}`}
                       fill
+                      unoptimized
                       className="object-cover"
                     />
                   </div>
