@@ -5,13 +5,26 @@ import { TreePine, ArrowRight, Skull, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { ProductsPreview } from '@/components/home/ProductsPreview'
 import { Button } from '@/components/ui/Button'
+import { useEffect, useRef } from 'react'
 
 export default function HomePage() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    // Принудительно запускаем видео при загрузке страницы
+    if (videoRef.current) {
+      videoRef.current.play().catch((error) => {
+        console.log('Video autoplay prevented:', error)
+      })
+    }
+  }, [])
+
   return (
     <div className="min-h-screen relative">
       {/* Fullscreen Background Video - фиксированное на всю страницу */}
       <div className="fixed inset-0 w-full h-full z-0">
         <video
+          ref={videoRef}
           autoPlay
           loop
           muted
