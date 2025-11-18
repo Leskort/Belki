@@ -4,6 +4,12 @@ import { prisma } from '@/lib/prisma'
 // GET - получить все товары или по slug
 export async function GET(request: NextRequest) {
   try {
+    // Проверяем доступность базы данных
+    if (!prisma) {
+      console.warn('Prisma client not initialized - DATABASE_URL not set')
+      return NextResponse.json([], { status: 200 })
+    }
+
     const searchParams = request.nextUrl.searchParams
     const slug = searchParams.get('slug')
     const limit = searchParams.get('limit')

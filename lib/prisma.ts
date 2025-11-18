@@ -7,18 +7,28 @@ const globalForPrisma = globalThis as unknown as {
 // DATABASE_URL должен быть установлен через переменные окружения
 // В Netlify: Site settings → Environment variables → Add variable
 // Значение: libsql://your-db-name.turso.io?authToken=your-token
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is not set')
+
+// Создаём Prisma Client только если DATABASE_URL установлен
+// Если нет - будет использован fallback в API routes
+let prismaInstance: PrismaClient | null = null
+
+if (process.env.DATABASE_URL) {
+  prismaInstance = globalForPrisma.prisma ?? new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+  })
+  
+  if (process.env.NODE_ENV !== 'production') {
+    globalForPrisma.prisma = prismaInstance
+  }
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({
-  log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-})
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+export const prisma = prismaInstance as PrismaClient
 
 // Функция для проверки доступности базы данных
 export async function isDatabaseAvailable(): Promise<boolean> {
+  if (!prisma) {
+    return false
+  }
   try {
     await prisma.$queryRaw`SELECT 1`
     return true
