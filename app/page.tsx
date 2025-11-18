@@ -1,146 +1,195 @@
 'use client'
 
 import Link from 'next/link'
-import { TreePine, ArrowRight, Skull, Sparkles } from 'lucide-react'
+import { TreePine, ArrowRight, Skull, Sparkles, ChevronDown, ArrowUpDown, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { ProductsPreview } from '@/components/home/ProductsPreview'
 import { Button } from '@/components/ui/Button'
-import { useEffect, useRef } from 'react'
+import { FlickerText } from '@/components/ui/FlickerText'
+import { useEffect, useRef, useState } from 'react'
 
 export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
+  const [videoError, setVideoError] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
 
   useEffect(() => {
     // Принудительно запускаем видео при загрузке страницы
     if (videoRef.current) {
       videoRef.current.play().catch((error) => {
         console.log('Video autoplay prevented:', error)
+        setVideoError(true)
       })
     }
+
+    // Параллакс эффект - слежение за курсором
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 100
+      const y = (e.clientY / window.innerHeight) * 100
+      setMousePosition({ x, y })
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
   return (
     <div className="min-h-screen relative">
-      {/* Fullscreen Background Video - фиксированное на всю страницу */}
-      <div className="fixed inset-0 w-full h-full z-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            zIndex: 0,
-          }}
-        >
-          <source src="/videos/forest-background.mp4" type="video/mp4" />
-          {/* Fallback для браузеров без поддержки видео */}
-          <div className="absolute inset-0 bg-gradient-to-b from-dark-100 to-dark-50" />
-        </video>
-        {/* Overlay для затемнения и размытия */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 backdrop-blur-sm" />
-      </div>
+      {/* Fullscreen Background Video */}
+      {!videoError && (
+        <div className="fixed inset-0 w-full h-full z-0">
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            onError={() => setVideoError(true)}
+            className="absolute inset-0 w-full h-full object-cover opacity-30"
+            style={{
+              width: '100vw',
+              height: '100vh',
+              objectFit: 'cover',
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              zIndex: 0,
+            }}
+          >
+            <source src="/videos/forest-background.mp4" type="video/mp4" />
+            <source src="/videos/horror-background.mp4" type="video/mp4" />
+          </video>
+          {/* Overlay для затемнения */}
+          <div className="absolute inset-0 bg-gradient-to-b from-horror-dark/80 via-horror-dark/60 to-horror-darker/80" />
+        </div>
+      )}
+
+      {/* Параллакс эффект - градиентное свечение */}
+      <div
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(0, 255, 65, 0.1) 0%, transparent 50%)`,
+        }}
+      />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden z-10" style={{ marginTop: '-80px', paddingTop: '80px' }}>
-        
-        {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
+            transition={{ duration: 1 }}
+            className="space-y-6"
           >
             {/* Main Title */}
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-4 horror-text text-neon-50">
-              ЖИВЫЕ ЁЛКИ
+            <h1 className="horror-text text-4xl sm:text-5xl md:text-7xl lg:text-9xl mb-6 text-horror-glow">
+              <FlickerText>ЖИВЫЕ ЁЛКИ</FlickerText>
             </h1>
             
             {/* Subtitle */}
-            <p className="text-2xl md:text-3xl text-white mb-6 font-medium">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-xl sm:text-2xl md:text-3xl mb-4 text-gray-300"
+            >
               Которые помнят каждую зиму
-            </p>
+            </motion.p>
             
             {/* Description */}
-            <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
+              className="text-base sm:text-lg md:text-xl mb-12 text-gray-400 max-w-2xl mx-auto"
+            >
               Каждая ёлка в нашем каталоге прошла через тёмные леса и готова стать частью вашего дома
-            </p>
+            </motion.p>
             
             {/* CTA Button */}
-            <div className="mb-16">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
+              className="mb-16"
+            >
               <Link href="/catalog">
-                <Button variant="primary" className="text-lg px-8 py-4 flex items-center gap-2 mx-auto">
+                <Button variant="primary" className="text-lg px-8 py-4 flex items-center gap-2 mx-auto bg-gradient-to-r from-horror-red to-horror-blood hover:from-horror-blood hover:to-horror-red shadow-lg shadow-horror-red/50">
                   ВЫБРАТЬ ЁЛКУ
                   <ArrowRight className="w-6 h-6" />
                 </Button>
               </Link>
-            </div>
+            </motion.div>
             
-            {/* Features Icons */}
+            {/* Feature Icons */}
             <div className="flex flex-wrap justify-center gap-8 md:gap-12 mt-16">
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1, duration: 0.5 }}
                 className="flex flex-col items-center"
               >
-                <div className="w-16 h-16 rounded-full bg-neon-50/20 border-2 border-neon-50 flex items-center justify-center mb-3 neon-glow">
-                  <Skull className="w-8 h-8 text-neon-50" />
-                </div>
-                <span className="text-neon-50 font-semibold text-lg">Уникальные</span>
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 0 }}
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-horror-glow mb-3"
+                >
+                  <Skull className="w-full h-full" />
+                </motion.div>
+                <span className="text-xs sm:text-sm text-gray-400">Уникальные</span>
               </motion.div>
               
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.3, duration: 0.5 }}
                 className="flex flex-col items-center"
               >
-                <div className="w-16 h-16 rounded-full bg-neon-50/20 border-2 border-neon-50 flex items-center justify-center mb-3 neon-glow">
-                  <TreePine className="w-8 h-8 text-neon-50" />
-                </div>
-                <span className="text-neon-50 font-semibold text-lg">Живые</span>
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-horror-glow mb-3"
+                >
+                  <TreePine className="w-full h-full" />
+                </motion.div>
+                <span className="text-xs sm:text-sm text-gray-400">Живые</span>
               </motion.div>
               
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4, duration: 0.5 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.5, duration: 0.5 }}
                 className="flex flex-col items-center"
               >
-                <div className="w-16 h-16 rounded-full bg-neon-50/20 border-2 border-neon-50 flex items-center justify-center mb-3 neon-glow">
-                  <Sparkles className="w-8 h-8 text-neon-50" />
-                </div>
-                <span className="text-neon-50 font-semibold text-lg">Запоминающиеся</span>
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, delay: 1 }}
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-horror-glow mb-3"
+                >
+                  <Sparkles className="w-full h-full" />
+                </motion.div>
+                <span className="text-xs sm:text-sm text-gray-400">Запоминающиеся</span>
               </motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Products Preview */}
-      <section className="relative py-16 px-4 bg-dark-50/95 backdrop-blur-sm z-10">
+      {/* Products Preview Section */}
+      <section className="relative py-16 px-4 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 horror-text text-neon-50">
+            <h2 className="horror-text text-4xl md:text-5xl font-bold mb-4 text-white horror-border inline-block px-8 py-4">
               НАШИ ЁЛКИ
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-300 text-lg mt-4">
               Выберите ёлку из нашей коллекции
             </p>
           </div>
           <ProductsPreview />
           <div className="text-center mt-12">
             <Link href="/catalog">
-              <Button variant="primary" className="flex items-center gap-2 mx-auto">
+              <Button variant="primary" className="flex items-center gap-2 mx-auto bg-gradient-to-r from-horror-red to-horror-blood hover:from-horror-blood hover:to-horror-red shadow-lg shadow-horror-red/50">
                 СМОТРЕТЬ ВСЕ ТОВАРЫ
                 <ArrowRight className="w-5 h-5" />
               </Button>
@@ -150,58 +199,71 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="relative py-16 px-4 bg-dark-100/95 backdrop-blur-sm z-10">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center horror-text text-neon-50">
-            Почему наши ёлки особенные?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="text-center p-8 bg-dark-200 rounded-lg border border-dark-300 hover:border-neon-50/50 transition-colors"
-            >
-              <h3 className="text-2xl font-bold mb-4 text-neon-50">
-                Тёмное происхождение
-              </h3>
-              <p className="text-gray-400 text-lg">
-                Каждая ёлка выросла в самых тёмных лесах
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="text-center p-8 bg-dark-200 rounded-lg border border-dark-300 hover:border-neon-50/50 transition-colors"
-            >
-              <h3 className="text-2xl font-bold mb-4 text-neon-50">
-                Живая энергия
-              </h3>
-              <p className="text-gray-400 text-lg">
-                Они помнят каждую зиму и готовы поделиться историей
-              </p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-center p-8 bg-dark-200 rounded-lg border border-dark-300 hover:border-neon-50/50 transition-colors"
-            >
-              <h3 className="text-2xl font-bold mb-4 text-neon-50">
-                Уникальный характер
-              </h3>
-              <p className="text-gray-400 text-lg">
-                Ни одна ёлка не похожа на другую
-              </p>
-            </motion.div>
+      <section className="relative py-16 px-4 z-10">
+        <div className="max-w-4xl mx-auto">
+          <div className="horror-border p-6 sm:p-12 text-center">
+            <h2 className="horror-text text-3xl sm:text-4xl md:text-5xl mb-6 text-horror-glow">
+              Почему наши ёлки особенные?
+            </h2>
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mt-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="text-center"
+              >
+                <h3 className="text-xl text-horror-glow mb-2 font-bold">
+                  Тёмное происхождение
+                </h3>
+                <p className="text-gray-400">
+                  Каждая ёлка выросла в самых тёмных лесах
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-center"
+              >
+                <h3 className="text-xl text-horror-glow mb-2 font-bold">
+                  Живая энергия
+                </h3>
+                <p className="text-gray-400">
+                  Они помнят каждую зиму и готовы поделиться историей
+                </p>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="text-center"
+              >
+                <h3 className="text-xl text-horror-glow mb-2 font-bold">
+                  Уникальный характер
+                </h3>
+                <p className="text-gray-400">
+                  Ни одна ёлка не похожа на другую
+                </p>
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="relative horror-border-t mt-20 backdrop-blur-sm bg-horror-dark/30 py-8 z-10">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-gray-400 mb-2">
+            © 2024 Ёлки из Тьмы. Все права защищены.
+          </p>
+          <p className="text-gray-500 text-sm">
+            Цены в белорусских рублях (BYN)
+          </p>
+        </div>
+      </footer>
     </div>
   )
 }
-

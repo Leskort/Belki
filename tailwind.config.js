@@ -27,6 +27,14 @@ module.exports = {
           100: '#1a4d2e',
           200: '#2d5a3d',
         },
+        horror: {
+          dark: '#0a0a0a',
+          darker: '#050505',
+          red: '#8b0000',
+          blood: '#dc2626',
+          glow: '#00ff41',
+          darkGlow: '#00cc33',
+        },
       },
       fontFamily: {
         horror: ['var(--font-horror)', 'serif'],

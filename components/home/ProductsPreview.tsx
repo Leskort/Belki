@@ -2,11 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { formatPrice } from '@/lib/utils'
-import { ShoppingCart } from 'lucide-react'
+import { ChevronDown, ArrowUpDown, X, ArrowUp, ArrowDown } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { motion } from 'framer-motion'
+import { ProductCard } from '@/components/catalog/ProductCard'
+import { Button } from '@/components/ui/Button'
+import { ArrowRight } from 'lucide-react'
 
 interface Product {
   id: string
@@ -15,37 +16,90 @@ interface Product {
   price: number
   image?: string
   inStock: boolean
+  description?: string
+  category?: {
+    id: string
+    name: string
+    slug: string
+  }
 }
+
+interface Category {
+  id: string
+  name: string
+  slug: string
+  _count?: {
+    products: number
+  }
+}
+
+type SortOption = 'popular' | 'name' | 'price'
+type SortDirection = 'asc' | 'desc'
 
 export function ProductsPreview() {
   const [products, setProducts] = useState<Product[]>([])
+  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
-  const { addItem } = useCart()
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const [sortBy, setSortBy] = useState<SortOption>('popular')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
 
   useEffect(() => {
-    fetch('/api/products?limit=6')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Failed to fetch products')
-        }
-        return res.json()
-      })
-      .then((data) => {
-        // Проверяем, что data - это массив
-        if (Array.isArray(data)) {
-          setProducts(data)
-        } else {
-          console.error('Invalid data format:', data)
-          setProducts([])
-        }
+    Promise.all([
+      fetch('/api/products')
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch products')
+          return res.json()
+        })
+        .then((data) => Array.isArray(data) ? data : []),
+      fetch('/api/categories')
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch categories')
+          return res.json()
+        })
+        .then((data) => Array.isArray(data) ? data : []),
+    ])
+      .then(([productsData, categoriesData]) => {
+        setProducts(productsData.filter((p: Product) => p.inStock))
+        setCategories(categoriesData)
         setLoading(false)
       })
       .catch((error) => {
-        console.error('Error fetching products:', error)
+        console.error('Error fetching data:', error)
         setProducts([])
+        setCategories([])
         setLoading(false)
       })
   }, [])
+
+  // Фильтрация и сортировка
+  const filteredProducts = products.filter((product) => {
+    if (!selectedCategory) return true
+    return product.category?.slug === selectedCategory
+  })
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'name') {
+      return sortDirection === 'asc'
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name)
+    }
+    if (sortBy === 'price') {
+      return sortDirection === 'asc' ? a.price - b.price : b.price - a.price
+    }
+    // popular - по умолчанию, без сортировки
+    return 0
+  })
+
+  const displayedProducts = sortedProducts.slice(0, 8)
+
+  // Подсчет товаров по категориям
+  const getCategoryCount = (categorySlug: string | null) => {
+    if (!categorySlug) return products.length
+    return products.filter((p) => p.category?.slug === categorySlug).length
+  }
+
+  const hasActiveFilters = selectedCategory !== null || sortBy !== 'popular'
 
   if (loading) {
     return (
@@ -67,70 +121,148 @@ export function ProductsPreview() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {products.map((product, index) => (
-        <motion.div
-          key={product.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          className="group bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-colors"
-        >
-          <Link href={`/catalog/${product.slug}`}>
-            <div className="relative h-64 bg-dark-300 overflow-hidden">
-              {product.image ? (
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  unoptimized
-                  className="object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <span className="text-gray-500">Нет изображения</span>
-                </div>
-              )}
-              {!product.inStock && (
-                <div className="absolute top-4 right-4 bg-neon-200 text-white px-3 py-1 rounded text-sm font-medium">
-                  Нет в наличии
-                </div>
-              )}
+    <div className="space-y-6">
+      {/* Фильтры и сортировка */}
+      <div className="bg-gradient-to-br from-horror-dark/80 via-horror-dark/60 to-horror-darker/80 backdrop-blur-xl border border-white/10 rounded-lg p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center justify-between">
+          {/* Категории */}
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-3">
+              <ChevronDown className="w-5 h-5 text-horror-glow" />
+              <span className="text-horror-glow font-medium">Категории</span>
             </div>
-          </Link>
-          <div className="p-4">
-            <Link href={`/catalog/${product.slug}`}>
-              <h3 className="text-lg font-bold text-white mb-2 group-hover:text-neon-50 transition-colors">
-                {product.name}
-              </h3>
-            </Link>
-            <div className="flex items-center justify-between">
-              <span className="text-xl font-bold text-neon-50 horror-text">
-                {formatPrice(product.price)}
-              </span>
-              <button
-                onClick={() =>
-                  product.inStock &&
-                  addItem({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    slug: product.slug,
-                  })
-                }
-                disabled={!product.inStock}
-                className="p-2 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed horror-glow"
-                aria-label="Добавить в корзину"
+            <div className="flex flex-wrap gap-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setSelectedCategory(null)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedCategory === null
+                    ? 'bg-gradient-to-r from-horror-glow/30 to-horror-glow/20 text-horror-glow border-2 border-horror-glow'
+                    : 'bg-horror-dark/50 text-gray-300 border-2 border-white/10 hover:border-horror-glow/30'
+                }`}
               >
-                <ShoppingCart className="w-5 h-5" />
-              </button>
+                ВСЕ ({getCategoryCount(null)})
+              </motion.button>
+              {categories.map((category) => {
+                const count = getCategoryCount(category.slug)
+                if (count === 0) return null
+                return (
+                  <motion.button
+                    key={category.id}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setSelectedCategory(category.slug)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                      selectedCategory === category.slug
+                        ? 'bg-gradient-to-r from-horror-glow/30 to-horror-glow/20 text-horror-glow border-2 border-horror-glow'
+                        : 'bg-horror-dark/50 text-gray-300 border-2 border-white/10 hover:border-horror-glow/30'
+                    }`}
+                  >
+                    {category.name.toUpperCase()} ({count})
+                  </motion.button>
+                )
+              })}
             </div>
           </div>
-        </motion.div>
-      ))}
+
+          {/* Сортировка */}
+          <div className="flex-1 sm:flex-initial">
+            <div className="flex items-center gap-2 mb-3">
+              <ArrowUpDown className="w-5 h-5 text-horror-glow" />
+              <span className="text-horror-glow font-medium">Сортировка:</span>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  if (sortBy === 'popular') {
+                    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+                  } else {
+                    setSortBy('popular')
+                    setSortDirection('asc')
+                  }
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1 ${
+                  sortBy === 'popular'
+                    ? 'bg-gradient-to-r from-horror-glow/30 to-horror-glow/20 text-horror-glow border-2 border-horror-glow'
+                    : 'bg-horror-dark/50 text-gray-300 border-2 border-white/10 hover:border-horror-glow/30'
+                }`}
+              >
+                Популярные {sortBy === 'popular' && (sortDirection === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  if (sortBy === 'name') {
+                    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+                  } else {
+                    setSortBy('name')
+                    setSortDirection('asc')
+                  }
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1 ${
+                  sortBy === 'name'
+                    ? 'bg-gradient-to-r from-horror-glow/30 to-horror-glow/20 text-horror-glow border-2 border-horror-glow'
+                    : 'bg-horror-dark/50 text-gray-300 border-2 border-white/10 hover:border-horror-glow/30'
+                }`}
+              >
+                По названию {sortBy === 'name' && (sortDirection === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  if (sortBy === 'price') {
+                    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+                  } else {
+                    setSortBy('price')
+                    setSortDirection('asc')
+                  }
+                }}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1 ${
+                  sortBy === 'price'
+                    ? 'bg-gradient-to-r from-horror-glow/30 to-horror-glow/20 text-horror-glow border-2 border-horror-glow'
+                    : 'bg-horror-dark/50 text-gray-300 border-2 border-white/10 hover:border-horror-glow/30'
+                }`}
+              >
+                По цене {sortBy === 'price' && (sortDirection === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />)}
+              </motion.button>
+              {hasActiveFilters && (
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setSelectedCategory(null)
+                    setSortBy('popular')
+                    setSortDirection('asc')
+                  }}
+                  className="px-4 py-2 rounded-full text-sm font-medium bg-horror-red/20 text-horror-red border-2 border-horror-red/50 hover:bg-horror-red/30 flex items-center gap-1"
+                >
+                  <X className="w-4 h-4" />
+                  Сбросить
+                </motion.button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Счетчик товаров */}
+        <div className="mt-4 pt-4 border-t border-white/10">
+          <p className="text-gray-300 text-sm">
+            Показано: {displayedProducts.length} товаров
+          </p>
+        </div>
+      </div>
+
+      {/* Сетка товаров */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+        {displayedProducts.map((product, index) => (
+          <ProductCard key={product.id} product={product} index={index} />
+        ))}
+      </div>
     </div>
   )
 }
-
-
