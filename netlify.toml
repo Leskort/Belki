@@ -11,9 +11,4 @@
   # Отключаем сканирование секретов для документации
   SECRETS_SCAN_OMIT_PATHS = "*.md"
 
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/next"
-  status = 200
-
 
