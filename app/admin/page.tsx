@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma'
 import { Package, FolderTree, ShoppingBag, Users } from 'lucide-react'
 import Link from 'next/link'
 
+// Делаем страницу динамической, чтобы не обращаться к БД во время сборки
+export const dynamic = 'force-dynamic'
+
 async function getStats() {
   const [productsCount, categoriesCount, ordersCount, usersCount] =
     await Promise.all([

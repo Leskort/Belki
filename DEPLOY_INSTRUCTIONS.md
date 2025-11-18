@@ -92,7 +92,8 @@ netlify deploy --prod
 3. Добавьте следующие переменные:
 
    **DATABASE_URL**
-   - Значение: `libsql://elki-db-leskort.aws-us-east-1.turso.io?authToken=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NjM0NzgzMzEsImlkIjoiYjRlZmE0MzEtNjliMy00ZWQ1LWI3YWYtN2I4ZTJiNzNjMWEzIiwicmlkIjoiYjFmMjNhZmQtNzY0ZS00OGI0LWJhMWUtN2NiNWRhYTdmNzc3In0.c1yeI6t5pJyjMztKh_lpl-aRa7pCmBVKbaLiwR4nluwmFbzRuAAZ8bmRPRBtpMJqqNVL2GckbVlf0xpqWmisAg`
+   - Значение: `libsql://your-db-name.aws-us-east-1.turso.io?authToken=your-auth-token`
+   - Получите connection string в Turso: Settings → Connection String
    - Scope: All scopes (Production, Deploy previews, Branch deploys)
 
    **NEXTAUTH_SECRET**
@@ -119,7 +120,7 @@ netlify deploy --prod
 
 ```powershell
 # Установите переменную окружения
-$env:DATABASE_URL="libsql://elki-db-leskort.aws-us-east-1.turso.io?authToken=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NjM0NzgzMzEsImlkIjoiYjRlZmE0MzEtNjliMy00ZWQ1LWI3YWYtN2I4ZTJiNzNjMWEzIiwicmlkIjoiYjFmMjNhZmQtNzY0ZS00OGI0LWJhMWUtN2NiNWRhYTdmNzc3In0.c1yeI6t5pJyjMztKh_lpl-aRa7pCmBVKbaLiwR4nluwmFbzRuAAZ8bmRPRBtpMJqqNVL2GckbVlf0xpqWmisAg"
+$env:DATABASE_URL="libsql://your-db-name.aws-us-east-1.turso.io?authToken=your-auth-token"
 
 # Создайте схему базы данных
 npx prisma db push
@@ -131,7 +132,7 @@ npm run db:seed
 ### Вариант B: Через Prisma Studio (визуально)
 
 ```powershell
-$env:DATABASE_URL="libsql://elki-db-leskort.aws-us-east-1.turso.io?authToken=ваш-токен"
+$env:DATABASE_URL="libsql://your-db-name.aws-us-east-1.turso.io?authToken=your-auth-token"
 npx prisma studio
 ```
 

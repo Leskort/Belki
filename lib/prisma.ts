@@ -4,14 +4,11 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// ДЕФОЛТНЫЙ CONNECTION STRING ДЛЯ TURSO (встроен в код!)
-// Замени на свой connection string после создания базы на turso.tech
-const DEFAULT_DATABASE_URL = process.env.DATABASE_URL || 
-  'libsql://elki-db-leskort.aws-us-east-1.turso.io?authToken=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NjM0NzgzMzEsImlkIjoiYjRlZmE0MzEtNjliMy00ZWQ1LWI3YWYtN2I4ZTJiNzNjMWEzIiwicmlkIjoiYjFmMjNhZmQtNzY0ZS00OGI0LWJhMWUtN2NiNWRhYTdmNzc3In0.c1yeI6t5pJyjMztKh_lpl-aRa7pCmBVKbaLiwR4nluwmFbzRuAAZ8bmRPRBtpMJqqNVL2GckbVlf0xpqWmisAg'
-
-// Устанавливаем DATABASE_URL если его нет
+// DATABASE_URL должен быть установлен через переменные окружения
+// В Netlify: Site settings → Environment variables → Add variable
+// Значение: libsql://your-db-name.turso.io?authToken=your-token
 if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = DEFAULT_DATABASE_URL
+  throw new Error('DATABASE_URL environment variable is not set')
 }
 
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({

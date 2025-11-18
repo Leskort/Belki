@@ -16,7 +16,7 @@
    - Скопируйте токен (показывается только один раз!)
 6. Сформируйте полный connection string:
    ```
-   libsql://elki-db-leskort.aws-us-east-1.turso.io?authToken=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJhIjoicnciLCJpYXQiOjE3NjM0Nzg1MDgsImlkIjoiYjRlZmE0MzEtNjliMy00ZWQ1LWI3YWYtN2I4ZTJiNzNjMWEzIiwicmlkIjoiYjFmMjNhZmQtNzY0ZS00OGI0LWJhMWUtN2NiNWRhYTdmNzc3In0.6HWqLmHmvBBmUviGrz7t529JXHbX3LgWG1uJlvCYpLNiVHD7uMaj0YAm8TWmQjoTTP-QmGoa34ZJtFMldjyVAQ
+   libsql://your-db-name.aws-us-east-1.turso.io?authToken=your-auth-token
    ```
 
 ## Шаг 2: Обновление connection string в коде
