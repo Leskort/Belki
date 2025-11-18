@@ -3,8 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  // DIRECT_URL опционален, используется для миграций (если не указан, используется DATABASE_URL)
+  // directUrl = env("DIRECT_URL")
 }
 
 model User {

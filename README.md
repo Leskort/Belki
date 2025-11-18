@@ -1,12 +1,12 @@
 # ЁЛКИ - Магазин живых ёлок
 
-Интернет-магазин живых ёлок на Next.js 14 с хоррор-дизайном и облачной базой данных Turso. Проект готов к продакшену на Netlify.
+Интернет-магазин живых ёлок на Next.js 14 с хоррор-дизайном и облачной базой данных Neon (PostgreSQL). Проект готов к продакшену на Netlify.
 
 ## Технологический стек
 
 - **Next.js 14** (App Router) с TypeScript
 - **Tailwind CSS 3.4** для стилей
-- **Prisma ORM** с Turso (SQLite в облаке)
+- **Prisma ORM** с Neon (PostgreSQL в облаке)
 - **NextAuth.js** для аутентификации
 - **Framer Motion** для анимаций
 - **React Hook Form + Zod** для валидации
@@ -20,28 +20,26 @@
 npm install
 ```
 
-### 2. Настройка базы данных Turso
+### 2. Настройка базы данных Neon
 
-1. Зайдите на [https://turso.tech](https://turso.tech)
+1. Зайдите на [https://neon.tech](https://neon.tech) или используйте Neon через Netlify
 2. Создайте аккаунт (можно через GitHub)
-3. Создайте базу данных (например, `elki-db`)
-4. Скопируйте Connection String
-5. Создайте токен доступа: Settings → Tokens → Create Token
-6. Скопируйте токен (показывается только один раз!)
+3. Создайте новый проект и базу данных
+4. Скопируйте Connection String из панели управления Neon
+5. Connection string будет выглядеть как: `postgresql://user:password@host/database?sslmode=require`
 
-### 3. Обновление connection string
+### 3. Настройка переменных окружения
 
-Откройте `lib/prisma.ts` и замените:
+Установите `DATABASE_URL` в переменных окружения:
 
-```typescript
-const DEFAULT_DATABASE_URL = 'libsql://elki-db-YOUR-USERNAME.aws-us-east-1.turso.io?authToken=YOUR-AUTH-TOKEN'
+**Локально (создайте файл `.env.local`):**
+```bash
+DATABASE_URL="postgresql://user:password@host/database?sslmode=require"
 ```
 
-На свой connection string с токеном:
-
-```typescript
-const DEFAULT_DATABASE_URL = 'libsql://elki-db-username.aws-us-east-1.turso.io?authToken=тут-твой-токен'
-```
+**На Netlify:**
+1. Site settings → Environment variables
+2. Добавьте переменную `DATABASE_URL` с вашим connection string от Neon
 
 ### 4. Выполнение миграций
 
@@ -87,7 +85,7 @@ npm start
 
 1. В Netlify: Site settings → Environment variables
 2. Добавьте:
-   - `DATABASE_URL` = ваш connection string с токеном
+   - `DATABASE_URL` = ваш PostgreSQL connection string от Neon
    - `NEXTAUTH_SECRET` = сгенерируйте случайную строку (минимум 32 символа)
    - `NEXTAUTH_URL` = URL вашего сайта на Netlify
 
@@ -118,8 +116,8 @@ elki-horror-shop/
 
 ## Особенности
 
-- ✅ База данных работает в облаке (Turso)
-- ✅ Connection string встроен в код (можно переопределить через env)
+- ✅ База данных работает в облаке (Neon PostgreSQL)
+- ✅ Connection string настраивается через переменные окружения
 - ✅ Готовность к продакшену на Netlify
 - ✅ Админ-панель для управления товарами и заказами
 - ✅ Хоррор-дизайн с анимациями

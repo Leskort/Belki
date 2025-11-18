@@ -3,10 +3,7 @@ import { NextResponse } from 'next/server'
 
 export default withAuth(
   function middleware(req) {
-    // Устанавливаем заголовок с pathname для использования в layout
-    const response = NextResponse.next()
-    response.headers.set('x-pathname', req.nextUrl.pathname)
-    return response
+    return NextResponse.next()
   },
   {
     callbacks: {

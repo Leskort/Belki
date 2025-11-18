@@ -6,7 +6,8 @@ const globalForPrisma = globalThis as unknown as {
 
 // DATABASE_URL должен быть установлен через переменные окружения
 // В Netlify: Site settings → Environment variables → Add variable
-// Значение: libsql://your-db-name.turso.io?authToken=your-token
+// Для Neon: postgresql://user:password@host/database?sslmode=require
+// Или используйте Neon connection string из панели управления
 
 // Создаём Prisma Client только если DATABASE_URL установлен
 // Если нет - будет использован fallback в API routes

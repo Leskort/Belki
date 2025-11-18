@@ -4,24 +4,13 @@ import { authOptions } from '@/lib/auth'
 import { LogoutButton } from '@/components/admin/LogoutButton'
 import Link from 'next/link'
 import { TreePine } from 'lucide-react'
-import { headers } from 'next/headers'
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // Получаем текущий путь из заголовка, установленного middleware
-  const headersList = await headers()
-  const pathname = headersList.get('x-pathname') || ''
-  
-  // Исключаем страницу логина из проверки авторизации
-  // Если мы на странице логина, просто возвращаем children без проверки
-  if (pathname === '/admin/login') {
-    return <>{children}</>
-  }
-
-  // Проверяем сессию для всех остальных страниц админки
+  // Проверяем сессию - middleware уже обработал доступ к /admin/login
   const session = await getServerSession(authOptions)
 
   if (!session || session.user?.role !== 'admin') {
