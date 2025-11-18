@@ -8,6 +8,22 @@ const globalForPrisma = globalThis as unknown as {
 // В Netlify: Site settings → Environment variables → Add variable
 // Для Neon: postgresql://user:password@host/database?sslmode=require
 // Или используйте Neon connection string из панели управления
+// Также поддерживается NETLIFY_DATABASE_URL (автоматически создается Neon)
+
+// Если DATABASE_URL не установлен, но есть NETLIFY_DATABASE_URL, используем его
+if (!process.env.DATABASE_URL && process.env.NETLIFY_DATABASE_URL) {
+  process.env.DATABASE_URL = process.env.NETLIFY_DATABASE_URL
+}
+
+// Проверяем, что connection string правильный
+if (process.env.DATABASE_URL) {
+  const dbUrl = process.env.DATABASE_URL
+  if (!dbUrl.startsWith('postgresql://') && !dbUrl.startsWith('postgres://')) {
+    console.error('⚠️ DATABASE_URL должен начинаться с postgresql:// или postgres://')
+    console.error('Текущее значение начинается с:', dbUrl.substring(0, 30) + '...')
+    console.error('Если вы используете Neon через Netlify, убедитесь, что NETLIFY_DATABASE_URL установлен')
+  }
+}
 
 // Создаём Prisma Client только если DATABASE_URL установлен
 // Если нет - будет использован fallback в API routes
