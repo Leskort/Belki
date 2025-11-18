@@ -10,6 +10,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Проверяем сессию - middleware уже обработал доступ к /admin/login
   const session = await getServerSession(authOptions)
 
   if (!session || session.user?.role !== 'admin') {
