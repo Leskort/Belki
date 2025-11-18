@@ -1,73 +1,51 @@
 import { redirect } from 'next/navigation'
-import { getCurrentUser } from '@/lib/auth'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 import { LogoutButton } from '@/components/admin/LogoutButton'
 import Link from 'next/link'
-import { TreePine, Package, FolderTree, ShoppingBag } from 'lucide-react'
+import { TreePine } from 'lucide-react'
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const user = await getCurrentUser()
+  const session = await getServerSession(authOptions)
 
-  if (!user || user.role !== 'admin') {
-    redirect('/login')
+  if (!session || session.user?.role !== 'admin') {
+    redirect('/admin/login')
   }
 
   return (
-    <div className="min-h-screen bg-dark-50">
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 bg-dark-100 border-r border-dark-300 min-h-screen p-6">
-          <div className="mb-8">
+    <div className="min-h-screen scary-bg">
+      {/* Header */}
+      <header className="horror-border-b backdrop-blur-md bg-horror-dark/95 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
             <Link href="/admin" className="flex items-center gap-2">
-              <TreePine className="w-8 h-8 text-forest-50" />
-              <span className="text-xl font-bold horror-text">Админ-панель</span>
+              <TreePine className="w-6 h-6 text-horror-glow" />
+              <span className="horror-text text-2xl text-horror-glow">АДМИН ПАНЕЛЬ</span>
             </Link>
+
+            {/* Navigation */}
+            <div className="flex items-center gap-4">
+              <Link
+                href="/"
+                className="text-gray-300 hover:text-horror-glow transition-colors"
+              >
+                На сайт
+              </Link>
+              <LogoutButton />
+            </div>
           </div>
+        </div>
+      </header>
 
-          <nav className="space-y-2">
-            <Link
-              href="/admin"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-dark-200 hover:text-white transition-colors"
-            >
-              <TreePine className="w-5 h-5" />
-              <span>Главная</span>
-            </Link>
-            <Link
-              href="/admin/products"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-dark-200 hover:text-white transition-colors"
-            >
-              <Package className="w-5 h-5" />
-              <span>Товары</span>
-            </Link>
-            <Link
-              href="/admin/categories"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-dark-200 hover:text-white transition-colors"
-            >
-              <FolderTree className="w-5 h-5" />
-              <span>Категории</span>
-            </Link>
-            <Link
-              href="/admin/orders"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-300 hover:bg-dark-200 hover:text-white transition-colors"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              <span>Заказы</span>
-            </Link>
-          </nav>
-
-          <div className="mt-8 pt-8 border-t border-dark-300">
-            <LogoutButton />
-          </div>
-        </aside>
-
-        {/* Main Content */}
-        <main className="flex-1 p-8">{children}</main>
-      </div>
+      {/* Main Content */}
+      <main className="container mx-auto px-4 py-8">
+        {children}
+      </main>
     </div>
   )
 }
-
-
