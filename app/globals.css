@@ -8,12 +8,8 @@
     --foreground: 0 0% 100%;
   }
 
-  * {
-    @apply border-border;
-  }
-
   body {
-    @apply bg-dark-50 text-foreground;
+    @apply bg-dark-50 text-white;
     font-family: system-ui, -apple-system, sans-serif;
   }
 }
