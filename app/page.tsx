@@ -34,7 +34,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <TreePine className="w-24 h-24 mx-auto mb-6 text-forest-50 forest-glow" />
+            <TreePine className="w-24 h-24 mx-auto mb-6 text-neon-50 neon-glow" />
             <h1 className="text-5xl md:text-7xl font-bold mb-6 horror-text">
               ЁЛКИ
             </h1>
