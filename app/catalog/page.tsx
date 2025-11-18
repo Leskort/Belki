@@ -32,15 +32,30 @@ export default function CatalogPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/products').then((res) => res.json()),
-      fetch('/api/categories').then((res) => res.json()),
+      fetch('/api/products')
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch products')
+          return res.json()
+        })
+        .then((data) => Array.isArray(data) ? data : []),
+      fetch('/api/categories')
+        .then((res) => {
+          if (!res.ok) throw new Error('Failed to fetch categories')
+          return res.json()
+        })
+        .then((data) => Array.isArray(data) ? data : []),
     ])
       .then(([productsData, categoriesData]) => {
         setProducts(productsData)
         setCategories(categoriesData)
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch((error) => {
+        console.error('Error fetching data:', error)
+        setProducts([])
+        setCategories([])
+        setLoading(false)
+      })
   }, [])
 
   const filteredProducts = selectedCategory

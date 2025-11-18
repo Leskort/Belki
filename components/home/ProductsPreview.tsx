@@ -24,18 +24,44 @@ export function ProductsPreview() {
 
   useEffect(() => {
     fetch('/api/products?limit=6')
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch products')
+        }
+        return res.json()
+      })
       .then((data) => {
-        setProducts(data)
+        // Проверяем, что data - это массив
+        if (Array.isArray(data)) {
+          setProducts(data)
+        } else {
+          console.error('Invalid data format:', data)
+          setProducts([])
+        }
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+      .catch((error) => {
+        console.error('Error fetching products:', error)
+        setProducts([])
+        setLoading(false)
+      })
   }, [])
 
   if (loading) {
     return (
       <div className="py-12 text-center">
         <p className="text-gray-400">Загрузка товаров из тёмного леса...</p>
+      </div>
+    )
+  }
+
+  if (products.length === 0) {
+    return (
+      <div className="py-12 text-center">
+        <p className="text-gray-400 mb-4">Товары временно недоступны</p>
+        <p className="text-gray-500 text-sm">
+          База данных не подключена или товары ещё не добавлены
+        </p>
       </div>
     )
   }

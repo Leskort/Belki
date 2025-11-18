@@ -14,12 +14,10 @@ export async function GET(request: NextRequest) {
     })
 
     return NextResponse.json(categories)
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error fetching categories:', error)
-    return NextResponse.json(
-      { error: 'Ошибка при получении категорий' },
-      { status: 500 }
-    )
+    // Возвращаем пустой массив вместо ошибки
+    return NextResponse.json([], { status: 200 })
   }
 }
 
