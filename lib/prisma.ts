@@ -13,16 +13,22 @@ const globalForPrisma = globalThis as unknown as {
 let prismaInstance: PrismaClient | null = null
 
 if (process.env.DATABASE_URL) {
-  prismaInstance = globalForPrisma.prisma ?? new PrismaClient({
-    log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
-  })
-  
-  if (process.env.NODE_ENV !== 'production') {
-    globalForPrisma.prisma = prismaInstance
+  try {
+    prismaInstance = globalForPrisma.prisma ?? new PrismaClient({
+      log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
+    })
+    
+    if (process.env.NODE_ENV !== 'production') {
+      globalForPrisma.prisma = prismaInstance
+    }
+  } catch (error) {
+    console.error('Failed to initialize Prisma Client:', error)
+    prismaInstance = null
   }
 }
 
-export const prisma = prismaInstance as PrismaClient
+// Экспортируем prisma, но он может быть null если DATABASE_URL не установлен
+export const prisma = prismaInstance
 
 // Функция для проверки доступности базы данных
 export async function isDatabaseAvailable(): Promise<boolean> {

@@ -7,6 +7,13 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена' },
+        { status: 503 }
+      )
+    }
+
     const product = await prisma.product.findUnique({
       where: { id: params.id },
       include: { category: true },
@@ -35,6 +42,13 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена' },
+        { status: 503 }
+      )
+    }
+
     const body = await request.json()
     const { name, slug, description, price, image, images, inStock, categoryId } = body
 
@@ -69,6 +83,13 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена' },
+        { status: 503 }
+      )
+    }
+
     await prisma.product.delete({
       where: { id: params.id },
     })

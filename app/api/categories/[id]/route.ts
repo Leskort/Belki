@@ -7,6 +7,13 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена' },
+        { status: 503 }
+      )
+    }
+
     const category = await prisma.category.findUnique({
       where: { id: params.id },
       include: {
@@ -40,6 +47,13 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена' },
+        { status: 503 }
+      )
+    }
+
     const body = await request.json()
     const { name, slug, description, image, parentId } = body
 
@@ -70,6 +84,13 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена' },
+        { status: 503 }
+      )
+    }
+
     await prisma.category.delete({
       where: { id: params.id },
     })

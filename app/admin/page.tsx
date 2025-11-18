@@ -6,15 +6,24 @@ import Link from 'next/link'
 export const dynamic = 'force-dynamic'
 
 async function getStats() {
-  const [productsCount, categoriesCount, ordersCount, usersCount] =
-    await Promise.all([
-      prisma.product.count(),
-      prisma.category.count(),
-      prisma.order.count(),
-      prisma.user.count(),
-    ])
+  if (!prisma) {
+    return { productsCount: 0, categoriesCount: 0, ordersCount: 0, usersCount: 0 }
+  }
 
-  return { productsCount, categoriesCount, ordersCount, usersCount }
+  try {
+    const [productsCount, categoriesCount, ordersCount, usersCount] =
+      await Promise.all([
+        prisma.product.count(),
+        prisma.category.count(),
+        prisma.order.count(),
+        prisma.user.count(),
+      ])
+
+    return { productsCount, categoriesCount, ordersCount, usersCount }
+  } catch (error) {
+    console.error('Error fetching stats:', error)
+    return { productsCount: 0, categoriesCount: 0, ordersCount: 0, usersCount: 0 }
+  }
 }
 
 export default async function AdminDashboard() {

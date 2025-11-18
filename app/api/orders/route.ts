@@ -21,6 +21,13 @@ const orderSchema = z.object({
 // POST - создать заказ
 export async function POST(request: NextRequest) {
   try {
+    if (!prisma) {
+      return NextResponse.json(
+        { error: 'База данных не настроена. Пожалуйста, обратитесь к администратору.' },
+        { status: 503 }
+      )
+    }
+
     const body = await request.json()
     const data = orderSchema.parse(body)
 
@@ -70,6 +77,10 @@ export async function POST(request: NextRequest) {
 // GET - получить все заказы (только для админа)
 export async function GET(request: NextRequest) {
   try {
+    if (!prisma) {
+      return NextResponse.json([], { status: 200 })
+    }
+
     // В реальном проекте здесь должна быть проверка админа
     // const admin = await requireAdmin()
 
