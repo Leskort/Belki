@@ -17,6 +17,11 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
+          if (!prisma) {
+            console.log('⚠️ Prisma client not initialized')
+            return null
+          }
+
           const dbAvailable = await isDatabaseAvailable()
           
           if (!dbAvailable) {
