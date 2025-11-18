@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "18"
+  # DATABASE_URL и NEXTAUTH_SECRET можно добавить в Netlify Environment Variables
+  # или они будут использованы из кода (lib/prisma.ts и lib/auth.ts)
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/next"
+  status = 200
+
+
