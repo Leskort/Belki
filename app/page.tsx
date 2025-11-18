@@ -8,31 +8,35 @@ import { Button } from '@/components/ui/Button'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Section с полноэкранным видео */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ marginTop: '-80px', paddingTop: '80px' }}>
-        {/* Fullscreen Background Video */}
-        <div className="absolute inset-0 w-full h-full z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              minHeight: '100vh',
-            }}
-          >
-            <source src="/videos/forest-background.mp4" type="video/mp4" />
-            {/* Fallback для браузеров без поддержки видео */}
-            <div className="absolute inset-0 bg-gradient-to-b from-dark-100 to-dark-50" />
-          </video>
-          {/* Overlay для затемнения и размытия */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 backdrop-blur-sm" />
-        </div>
+    <div className="min-h-screen relative">
+      {/* Fullscreen Background Video - фиксированное на всю страницу */}
+      <div className="fixed inset-0 w-full h-full z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            zIndex: 0,
+          }}
+        >
+          <source src="/videos/forest-background.mp4" type="video/mp4" />
+          {/* Fallback для браузеров без поддержки видео */}
+          <div className="absolute inset-0 bg-gradient-to-b from-dark-100 to-dark-50" />
+        </video>
+        {/* Overlay для затемнения и размытия */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70 backdrop-blur-sm" />
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden z-10" style={{ marginTop: '-80px', paddingTop: '80px' }}>
         
         {/* Hero Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 text-center">
@@ -110,7 +114,7 @@ export default function HomePage() {
       </section>
 
       {/* Products Preview */}
-      <section className="relative py-16 px-4 bg-dark-50">
+      <section className="relative py-16 px-4 bg-dark-50/95 backdrop-blur-sm z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 horror-text text-neon-50">
@@ -133,7 +137,7 @@ export default function HomePage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-dark-100">
+      <section className="relative py-16 px-4 bg-dark-100/95 backdrop-blur-sm z-10">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center horror-text text-neon-50">
             Почему наши ёлки особенные?
