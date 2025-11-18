@@ -22,7 +22,7 @@ export default function RootLayout({
         <Providers>
           <div className="min-h-screen bg-dark-50 text-white">
             <Navbar />
-            <main className="pt-20">
+            <main>
               {children}
             </main>
           </div>
