@@ -106,23 +106,8 @@ export default function HomePage() {
               Каждая ёлка в нашем каталоге прошла через тёмные леса и готова стать частью вашего дома
             </motion.p>
             
-            {/* CTA Button */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.9, duration: 0.5 }}
-              className="mb-16"
-            >
-              <Link href="/catalog">
-                <Button variant="primary" className="text-lg px-8 py-4 flex items-center gap-2 mx-auto bg-gradient-to-r from-horror-red to-horror-blood hover:from-horror-blood hover:to-horror-red shadow-lg shadow-horror-red/50">
-                  ВЫБРАТЬ ЁЛКУ
-                  <ArrowRight className="w-6 h-6" />
-                </Button>
-              </Link>
-            </motion.div>
-            
             {/* Feature Icons */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12 mt-16">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-12 sm:mb-16 md:mb-20">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -171,6 +156,21 @@ export default function HomePage() {
                 <span className="text-xs sm:text-sm text-gray-300">Запоминающиеся</span>
               </motion.div>
             </div>
+            
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
+              className="mt-8 sm:mt-12"
+            >
+              <Link href="/catalog">
+                <Button variant="primary" className="text-lg px-8 py-4 flex items-center gap-2 mx-auto bg-gradient-to-r from-horror-red to-horror-blood hover:from-horror-blood hover:to-horror-red shadow-lg shadow-horror-red/50">
+                  ВЫБРАТЬ ЁЛКУ
+                  <ArrowRight className="w-6 h-6" />
+                </Button>
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>
