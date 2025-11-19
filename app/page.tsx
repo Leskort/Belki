@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { TreePine, ArrowRight, Skull, Sparkles, ChevronDown, ArrowUpDown, X } from 'lucide-react'
+import { TreePine, ArrowRight, Star, Sparkles, ChevronDown, ArrowUpDown, X } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { ProductsPreview } from '@/components/home/ProductsPreview'
 import { Button } from '@/components/ui/Button'
@@ -132,9 +132,9 @@ export default function HomePage() {
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 0 }}
-                  className="w-12 h-12 sm:w-16 sm:h-16 text-horror-glow mb-3"
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-forest-50 mb-3"
                 >
-                  <Skull className="w-full h-full" />
+                  <Star className="w-full h-full fill-forest-50" />
                 </motion.div>
                 <span className="text-xs sm:text-sm text-gray-400">Уникальные</span>
               </motion.div>
@@ -148,7 +148,7 @@ export default function HomePage() {
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                  className="w-12 h-12 sm:w-16 sm:h-16 text-horror-glow mb-3"
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-forest-50 mb-3"
                 >
                   <TreePine className="w-full h-full" />
                 </motion.div>
@@ -164,7 +164,7 @@ export default function HomePage() {
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-                  className="w-12 h-12 sm:w-16 sm:h-16 text-horror-glow mb-3"
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-forest-50 mb-3"
                 >
                   <Sparkles className="w-full h-full" />
                 </motion.div>
