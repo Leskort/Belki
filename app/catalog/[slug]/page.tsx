@@ -159,11 +159,11 @@ export default function CatalogSlugPage() {
     <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
       <div className="max-w-7xl mx-auto">
         <Link
-          href="/catalog"
+          href={`/catalog/${product.category.slug}`}
           className="inline-flex items-center gap-2 text-gray-400 hover:text-neon-50 transition-colors mb-6 sm:mb-8"
         >
           <ArrowLeft className="w-5 h-5" />
-          Назад в каталог
+          Назад в {product.category.name}
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
