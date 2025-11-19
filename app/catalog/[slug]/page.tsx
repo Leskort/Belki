@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useMemo } from 'react'
 import { useParams, useSearchParams } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
 import { ShoppingCart, ArrowLeft, ArrowUp, ArrowDown } from 'lucide-react'
@@ -298,12 +297,18 @@ export default function CatalogSlugPage() {
           >
             <div className="relative aspect-square bg-dark-200 rounded-lg overflow-hidden border border-dark-300">
               {images[0] ? (
-                <Image
+                <img
                   src={images[0]}
                   alt={product.name}
-                  fill
-                  unoptimized
-                  className="object-cover"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement
+                    target.style.display = 'none'
+                    const parent = target.parentElement
+                    if (parent) {
+                      parent.innerHTML = '<div class="w-full h-full flex items-center justify-center"><span class="text-gray-500">Ошибка загрузки изображения</span></div>'
+                    }
+                  }}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
@@ -318,12 +323,14 @@ export default function CatalogSlugPage() {
                     key={index}
                     className="relative aspect-square bg-dark-200 rounded-lg overflow-hidden border border-dark-300"
                   >
-                    <Image
+                    <img
                       src={img}
                       alt={`${product.name} ${index + 2}`}
-                      fill
-                      unoptimized
-                      className="object-cover"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement
+                        target.style.display = 'none'
+                      }}
                     />
                   </div>
                 ))}
