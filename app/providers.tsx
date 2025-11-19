@@ -5,7 +5,10 @@ import { CartProvider } from '@/contexts/CartContext'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <SessionProvider>
+    <SessionProvider
+      refetchInterval={0}
+      refetchOnWindowFocus={false}
+    >
       <CartProvider>
         {children}
       </CartProvider>

@@ -85,6 +85,7 @@ export const authOptions: NextAuthOptions = {
   },
   secret: NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === 'development',
+  trustHost: true,
 }
 
 export async function getCurrentUser() {

@@ -39,7 +39,7 @@ export function ProductCard({ product, index }: ProductCardProps) {
       className="group relative bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl border border-white/20 rounded-lg overflow-hidden shadow-2xl shadow-black/50 hover:border-horror-glow/50 transition-all duration-300"
     >
       <Link href={`/catalog/${product.slug}`}>
-        <div className="relative h-64 sm:h-72 overflow-hidden">
+        <div className="relative h-48 sm:h-64 md:h-72 overflow-hidden">
           {product.image ? (
             <>
               <Image
@@ -59,51 +59,52 @@ export function ProductCard({ product, index }: ProductCardProps) {
           )}
           
           {/* Бейдж наличия */}
-          <div className={`absolute top-3 right-3 px-3 py-1 rounded-full backdrop-blur-md border ${
+          <div className={`absolute top-2 right-2 sm:top-3 sm:right-3 px-2 py-0.5 sm:px-3 sm:py-1 rounded-full backdrop-blur-md border ${
             product.inStock
               ? 'bg-horror-glow/20 border-horror-glow/50 text-horror-glow'
               : 'bg-horror-red/20 border-horror-red/50 text-horror-red'
-          } text-xs font-medium flex items-center gap-1.5`}>
-            <span className={`w-2 h-2 rounded-full ${
+          } text-xs font-medium flex items-center gap-1 sm:gap-1.5`}>
+            <span className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
               product.inStock ? 'bg-horror-glow' : 'bg-horror-red'
             } shadow-lg ${product.inStock ? 'shadow-horror-glow/50' : 'shadow-horror-red/50'}`} />
-            {product.inStock ? 'В наличии' : 'Нет в наличии'}
+            <span className="hidden sm:inline">{product.inStock ? 'В наличии' : 'Нет в наличии'}</span>
+            <span className="sm:hidden">{product.inStock ? '✓' : '✗'}</span>
           </div>
         </div>
       </Link>
 
-      <div className="p-4 space-y-2">
+      <div className="p-2 sm:p-4 space-y-1 sm:space-y-2">
         <Link href={`/catalog/${product.slug}`}>
-          <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-horror-glow transition-colors line-clamp-1">
+          <h3 className="text-sm sm:text-base md:text-lg font-bold text-white group-hover:text-horror-glow transition-colors line-clamp-2">
             {product.name}
           </h3>
         </Link>
         
         {product.description && (
-          <p className="text-xs sm:text-sm text-gray-400 line-clamp-2">
+          <p className="text-xs text-gray-400 line-clamp-2 hidden sm:block">
             {product.description}
           </p>
         )}
         
         {product.category && (
-          <p className="text-xs text-horror-glow font-medium">
+          <p className="text-xs text-horror-glow font-medium hidden sm:block">
             {product.category.name.toUpperCase()}
           </p>
         )}
         
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-1 sm:pt-2">
           <div>
-            <p className="text-2xl sm:text-3xl font-bold text-horror-red">
+            <p className="text-lg sm:text-2xl md:text-3xl font-bold text-horror-red">
               {formatPrice(product.price)}
             </p>
-            <p className="text-xs text-gray-500">за единицу</p>
+            <p className="text-xs text-gray-500 hidden sm:block">за единицу</p>
           </div>
           
           {/* Кнопка корзины */}
           {product.inStock && (
-            <div className="absolute bottom-4 right-4">
+            <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4">
               {quantity > 0 ? (
-                <div className="flex items-center gap-2 bg-horror-glow/20 backdrop-blur-md border border-horror-glow/50 rounded-lg px-2 py-1">
+                <div className="flex items-center gap-1 sm:gap-2 bg-horror-glow/20 backdrop-blur-md border border-horror-glow/50 rounded-lg px-1.5 py-0.5 sm:px-2 sm:py-1">
                   <button
                     onClick={(e) => {
                       e.preventDefault()
@@ -113,11 +114,11 @@ export function ProductCard({ product, index }: ProductCardProps) {
                         updateQuantity(product.id, quantity - 1)
                       }
                     }}
-                    className="p-1 hover:bg-horror-glow/30 rounded transition-colors"
+                    className="p-0.5 sm:p-1 hover:bg-horror-glow/30 rounded transition-colors"
                   >
-                    <Minus className="w-4 h-4 text-horror-glow" />
+                    <Minus className="w-3 h-3 sm:w-4 sm:h-4 text-horror-glow" />
                   </button>
-                  <span className="text-horror-glow font-bold min-w-[20px] text-center">
+                  <span className="text-horror-glow font-bold min-w-[16px] sm:min-w-[20px] text-center text-xs sm:text-sm">
                     {quantity}
                   </span>
                   <button
@@ -125,9 +126,9 @@ export function ProductCard({ product, index }: ProductCardProps) {
                       e.preventDefault()
                       updateQuantity(product.id, quantity + 1)
                     }}
-                    className="p-1 hover:bg-horror-glow/30 rounded transition-colors"
+                    className="p-0.5 sm:p-1 hover:bg-horror-glow/30 rounded transition-colors"
                   >
-                    <Plus className="w-4 h-4 text-horror-glow" />
+                    <Plus className="w-3 h-3 sm:w-4 sm:h-4 text-horror-glow" />
                   </button>
                 </div>
               ) : (
@@ -142,10 +143,10 @@ export function ProductCard({ product, index }: ProductCardProps) {
                       slug: product.slug,
                     })
                   }}
-                  className="p-3 bg-horror-glow/20 backdrop-blur-md border border-horror-glow/50 rounded-lg hover:bg-horror-glow/30 transition-colors"
+                  className="p-2 sm:p-3 bg-horror-glow/20 backdrop-blur-md border border-horror-glow/50 rounded-lg hover:bg-horror-glow/30 transition-colors"
                   aria-label="Добавить в корзину"
                 >
-                  <ShoppingCart className="w-5 h-5 text-horror-glow" />
+                  <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5 text-horror-glow" />
                 </button>
               )}
             </div>

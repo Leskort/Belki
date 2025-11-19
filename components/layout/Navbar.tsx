@@ -486,10 +486,8 @@ export function Navbar() {
                 </Link>
               ))}
 
-              {/* Контакты - заголовок */}
+              {/* Контакты */}
               <div className="px-2 pt-4 border-t border-dark-300/50">
-                <h3 className="text-base font-bold horror-text text-neon-50 mb-3">Контакты</h3>
-                
                 {/* Mobile Phone */}
                 <div className="px-2 py-2">
                   <a
