@@ -15,10 +15,8 @@ interface CartModalProps {
 export function CartModal({ isOpen, onClose }: CartModalProps) {
   const { items, updateQuantity, removeItem, total, clearCart } = useCart()
 
-  if (!isOpen) return null
-
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <>
           {/* Backdrop */}
@@ -27,17 +25,19 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 z-50"
+            className="fixed inset-0 bg-black/80 z-[100] backdrop-blur-sm"
           />
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, x: 300 }}
+            initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 300 }}
-            className="fixed right-0 top-0 bottom-0 w-full max-w-md bg-dark-100 z-50 shadow-2xl overflow-y-auto"
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="fixed right-0 top-0 bottom-0 w-full sm:w-96 md:w-[28rem] bg-dark-100 z-[100] shadow-2xl overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold horror-text">Корзина</h2>
@@ -66,10 +66,10 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center gap-4 p-4 bg-dark-200 rounded-lg"
+                        className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-dark-200 rounded-lg"
                       >
                         {item.image && (
-                          <div className="relative w-16 h-16 flex-shrink-0">
+                          <div className="relative w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
                             <Image
                               src={item.image}
                               alt={item.name}
@@ -129,7 +129,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
                         {formatPrice(total)}
                       </span>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2">
                       <Link
                         href="/cart"
                         onClick={onClose}

@@ -48,10 +48,10 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen py-12 px-4">
+      <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <ShoppingCart className="w-24 h-24 mx-auto mb-6 text-gray-500" />
-          <h1 className="text-3xl font-bold mb-4 horror-text">
+          <ShoppingCart className="w-16 h-16 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 text-gray-500" />
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-4 horror-text text-horror-glow">
             Корзина пуста
           </h1>
           <p className="text-gray-400 mb-8">
@@ -66,9 +66,9 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 horror-text">Корзина</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-6 sm:mb-8 horror-text text-horror-glow">Корзина</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Items */}

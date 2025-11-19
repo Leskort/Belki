@@ -2,10 +2,10 @@ import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function ContactsPage() {
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 horror-text">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 horror-text text-horror-glow">
             Контакты
           </h1>
           <p className="text-gray-400 text-lg">

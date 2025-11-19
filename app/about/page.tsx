@@ -2,11 +2,11 @@ import { TreePine } from 'lucide-react'
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <TreePine className="w-16 h-16 mx-auto mb-6 text-forest-50 forest-glow" />
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 horror-text">
+        <div className="text-center mb-8 sm:mb-12">
+          <TreePine className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 sm:mb-6 text-forest-50 forest-glow" />
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-4 horror-text text-horror-glow">
             О нас
           </h1>
         </div>

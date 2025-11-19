@@ -73,8 +73,8 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden z-10" style={{ marginTop: '-80px', paddingTop: '80px' }}>
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-20 text-center">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden z-10 -mt-16 sm:-mt-20 pt-20 sm:pt-24">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 sm:py-20 text-center">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}

@@ -77,11 +77,11 @@ export default function ProductPage() {
     : []
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
       <div className="max-w-7xl mx-auto">
         <Link
           href="/catalog"
-          className="inline-flex items-center gap-2 text-gray-400 hover:text-neon-50 transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-gray-400 hover:text-neon-50 transition-colors mb-6 sm:mb-8"
         >
           <ArrowLeft className="w-5 h-5" />
           Назад в каталог
