@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { TreePine, Menu, X, Search, Phone } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { CartIcon } from '@/components/cart/CartIcon'
 import { CallbackModal } from './CallbackModal'
 import { cn } from '@/lib/utils'
