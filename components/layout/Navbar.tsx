@@ -201,13 +201,13 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          <div className="hidden md:flex items-center space-x-3 lg:space-x-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'text-base font-medium horror-text transition-all duration-300 relative group/link',
+                  'text-sm lg:text-base font-medium horror-text transition-all duration-300 relative group/link whitespace-nowrap',
                   pathname === link.href
                     ? 'text-neon-50'
                     : 'text-white hover:text-neon-50'
@@ -226,19 +226,19 @@ export function Navbar() {
           </div>
 
           {/* Right Side: Search, Phone, Social, Cart */}
-          <div className="flex items-center space-x-3 sm:space-x-4">
-            {/* Search - Desktop */}
-            <div className="relative hidden lg:block">
+          <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4">
+            {/* Search - Desktop и Tablet */}
+            <div className="relative hidden md:block">
               {/* Кнопка поиска - всегда видна и не сдвигается */}
               <button
                 onClick={() => setShowSearch(true)}
-                className={`p-2 text-white hover:text-neon-50 transition-all rounded-lg hover:bg-white/10 flex items-center gap-2 group ${
+                className={`p-2 text-white hover:text-neon-50 transition-all rounded-lg hover:bg-white/10 flex items-center gap-1 lg:gap-2 group ${
                   showSearch ? 'opacity-0 pointer-events-none' : 'opacity-100'
                 }`}
                 aria-label="Поиск"
               >
-                <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                <span className="hidden xl:inline text-sm">Поиск</span>
+                <Search className="w-4 h-4 lg:w-5 lg:h-5 group-hover:scale-110 transition-transform" />
+                <span className="hidden lg:inline text-sm">Поиск</span>
               </button>
 
               {/* Поиск в абсолютной позиции - не влияет на layout */}
@@ -248,7 +248,7 @@ export function Navbar() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.95, y: -10 }}
                   transition={{ duration: 0.2, ease: 'easeOut' }}
-                  className="absolute right-0 top-full mt-2 w-[420px] z-[100] search-dropdown"
+                  className="absolute right-0 top-full mt-2 w-[320px] md:w-[360px] lg:w-[420px] z-[100] search-dropdown"
                 >
                   <form onSubmit={handleSearch} className="relative">
                     <div className="relative">
@@ -350,10 +350,10 @@ export function Navbar() {
             </div>
 
             {/* Phone Number */}
-            <div className="hidden lg:flex flex-col items-end">
+            <div className="hidden md:flex flex-col items-end">
               <a
                 href="tel:+375447788813"
-                className="text-white text-sm font-medium hover:text-neon-50 transition-colors"
+                className="text-white text-xs lg:text-sm font-medium hover:text-neon-50 transition-colors"
               >
                 +375 (44) 778-88-13
               </a>
@@ -369,10 +369,10 @@ export function Navbar() {
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-110 group/insta"
+              className="p-1.5 md:p-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-110 group/insta"
               aria-label="Instagram"
             >
-              <InstagramIcon className="w-6 h-6 transition-transform duration-300 group-hover/insta:scale-110" />
+              <InstagramIcon className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-300 group-hover/insta:scale-110" />
             </a>
 
             {/* Telegram */}
@@ -380,10 +380,10 @@ export function Navbar() {
               href="https://t.me"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-110 group/tg"
+              className="p-1.5 md:p-2 rounded-lg hover:bg-white/10 transition-all duration-300 hover:scale-110 group/tg"
               aria-label="Telegram"
             >
-              <TelegramIcon className="w-6 h-6 transition-transform duration-300 group-hover/tg:scale-110" />
+              <TelegramIcon className="w-5 h-5 md:w-6 md:h-6 transition-transform duration-300 group-hover/tg:scale-110" />
             </a>
 
             <CartIcon />
@@ -469,37 +469,6 @@ export function Navbar() {
                 )}
               </div>
 
-              {/* Mobile Phone */}
-              <div className="px-2 py-2 border-b border-dark-300/50">
-                <a
-                  href="tel:+375447788813"
-                  className="text-white text-base font-medium hover:text-neon-50 transition-colors flex items-center gap-2"
-                >
-                  <Phone className="w-5 h-5" />
-                  +375 (44) 778-88-13
-                </a>
-                <button
-                  onClick={() => {
-                    setCallbackModalOpen(true)
-                    setMobileMenuOpen(false)
-                  }}
-                  className="text-sm text-gray-400 hover:text-neon-50 transition-colors mt-1"
-                >
-                  Заказать звонок
-                </button>
-              </div>
-
-              {/* Mobile Address */}
-              <div className="px-2 py-2 border-b border-dark-300/50">
-                <div className="text-white text-base font-medium flex items-start gap-2">
-                  <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <div>г Минск</div>
-                    <div className="text-sm text-gray-300">Сурганова 50, ТЦ Рига</div>
-                  </div>
-                </div>
-              </div>
-
               {/* Navigation Links */}
               {navLinks.map((link) => (
                 <Link
@@ -516,6 +485,43 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+
+              {/* Контакты - заголовок */}
+              <div className="px-2 pt-4 border-t border-dark-300/50">
+                <h3 className="text-base font-bold horror-text text-neon-50 mb-3">Контакты</h3>
+                
+                {/* Mobile Phone */}
+                <div className="px-2 py-2">
+                  <a
+                    href="tel:+375447788813"
+                    className="text-white text-base font-medium hover:text-neon-50 transition-colors flex items-center gap-2"
+                  >
+                    <Phone className="w-5 h-5" />
+                    +375 (44) 778-88-13
+                  </a>
+                  <button
+                    onClick={() => {
+                      setCallbackModalOpen(true)
+                      setMobileMenuOpen(false)
+                    }}
+                    className="text-sm text-gray-400 hover:text-neon-50 transition-colors mt-1 ml-7"
+                  >
+                    Заказать звонок
+                  </button>
+                </div>
+
+                {/* Mobile Address */}
+                <div className="px-2 py-2">
+                  <div className="text-white text-base font-medium flex items-start gap-2">
+                    <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <div>г Минск</div>
+                      <div className="text-sm text-gray-300">Сурганова 50, ТЦ Рига</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Social links в мобильном меню */}
               <div className="flex items-center space-x-4 pt-2 border-t border-dark-300/50 px-2">
                 <a

@@ -5,11 +5,23 @@ import { Providers } from './providers'
 import { Navbar } from '@/components/layout/Navbar'
 import { SafariFullscreen } from '@/components/SafariFullscreen'
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] })
+const inter = Inter({ 
+  subsets: ['latin', 'cyrillic'],
+  display: 'swap',
+  preload: false,
+})
 
 export const metadata: Metadata = {
   title: 'ЁЛКИ - Магазин живых ёлок',
   description: 'Свежесрезанные ёлки из тёмных лесов. Хоррор-атмосфера для вашего праздника.',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
