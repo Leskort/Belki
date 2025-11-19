@@ -230,30 +230,42 @@ export default function CatalogSlugPage() {
             animate={{ opacity: 1, x: 0 }}
             className="space-y-6"
           >
+            {/* Категория и название */}
             <div>
-              <span className="text-sm text-gray-500 mb-2 block">
+              <span className="text-sm text-gray-400 mb-2 block uppercase tracking-wide">
                 {product.category.name}
               </span>
-              <h1 className="text-4xl font-bold mb-4 horror-text">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 horror-text text-white">
                 {product.name}
               </h1>
-              <div className="text-3xl font-bold text-neon-50 horror-text mb-6">
-                {formatPrice(product.price)}
-              </div>
             </div>
 
-            {product.description && (
-              <div>
-                <h2 className="text-xl font-bold mb-3 text-white">
-                  Описание
-                </h2>
-                <p className="text-gray-300 leading-relaxed">
-                  {product.description}
-                </p>
+            {/* Блок с ценой и наличием */}
+            <div className="bg-dark-200 rounded-lg p-6 border border-dark-300">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <span className="text-sm text-gray-400 block mb-1">Цена</span>
+                  <div className="text-3xl sm:text-4xl font-bold text-neon-50 horror-text">
+                    {formatPrice(product.price)}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${
+                    product.inStock
+                      ? 'bg-green-500/20 border border-green-500/50 text-green-400'
+                      : 'bg-red-500/20 border border-red-500/50 text-red-400'
+                  }`}>
+                    <span className={`w-2 h-2 rounded-full ${
+                      product.inStock ? 'bg-green-400' : 'bg-red-400'
+                    }`} />
+                    <span className="text-sm font-medium">
+                      {product.inStock ? 'В наличии' : 'Нет в наличии'}
+                    </span>
+                  </div>
+                </div>
               </div>
-            )}
-
-            <div className="pt-6 border-t border-dark-300">
+              
+              {/* Кнопка добавления в корзину */}
               {product.inStock ? (
                 <button
                   onClick={() =>
@@ -265,16 +277,51 @@ export default function CatalogSlugPage() {
                       slug: product.slug,
                     })
                   }
-                  className="w-full px-6 py-4 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors font-medium flex items-center justify-center gap-2 horror-glow"
+                  className="w-full px-6 py-4 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-all duration-300 font-bold text-lg flex items-center justify-center gap-3 horror-glow shadow-lg shadow-neon-50/30 hover:shadow-neon-50/50"
                 >
-                  <ShoppingCart className="w-5 h-5" />
+                  <ShoppingCart className="w-6 h-6" />
                   Добавить в корзину
                 </button>
               ) : (
-                <div className="w-full px-6 py-4 bg-dark-200 text-gray-400 rounded-lg text-center font-medium">
-                  Нет в наличии
+                <div className="w-full px-6 py-4 bg-dark-300 text-gray-400 rounded-lg text-center font-medium text-lg border border-dark-400">
+                  Товар временно недоступен
                 </div>
               )}
+            </div>
+
+            {/* Описание товара */}
+            {product.description && (
+              <div className="bg-dark-200 rounded-lg p-6 border border-dark-300">
+                <h2 className="text-xl font-bold mb-4 text-white border-b border-dark-300 pb-3">
+                  Описание товара
+                </h2>
+                <p className="text-gray-300 leading-relaxed text-base">
+                  {product.description}
+                </p>
+              </div>
+            )}
+
+            {/* Дополнительная информация */}
+            <div className="bg-dark-200 rounded-lg p-6 border border-dark-300">
+              <h2 className="text-xl font-bold mb-4 text-white border-b border-dark-300 pb-3">
+                Информация о товаре
+              </h2>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Категория:</span>
+                  <span className="text-white font-medium">{product.category.name}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Артикул:</span>
+                  <span className="text-white font-medium">#{product.id.slice(0, 8)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Наличие:</span>
+                  <span className={`font-medium ${product.inStock ? 'text-green-400' : 'text-red-400'}`}>
+                    {product.inStock ? 'Есть в наличии' : 'Нет в наличии'}
+                  </span>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
