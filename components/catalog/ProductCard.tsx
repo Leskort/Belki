@@ -81,7 +81,7 @@ export function ProductCard({ product, index }: ProductCardProps) {
         </Link>
         
         {product.description && (
-          <p className="text-xs text-gray-400 line-clamp-2 hidden sm:block">
+          <p className="text-xs text-gray-400 line-clamp-2">
             {product.description}
           </p>
         )}

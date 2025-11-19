@@ -260,11 +260,23 @@ export default function CatalogSlugPage() {
 
   // Если это товар - показываем страницу товара
   if (isCategory === false && product) {
-    const images = product.images
-    ? (JSON.parse(product.images) as string[])
-    : product.image
-    ? [product.image]
-    : []
+    // Парсим изображения с обработкой ошибок
+    let images: string[] = []
+    try {
+      if (product.images && product.images.trim() !== '' && product.images !== '[]') {
+        const parsed = JSON.parse(product.images)
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          images = parsed.filter((img: any) => img && typeof img === 'string' && img.trim() !== '')
+        }
+      }
+    } catch (e) {
+      console.error('Error parsing images:', e)
+    }
+    
+    // Если нет изображений в массиве, используем основное изображение
+    if (images.length === 0 && product.image && product.image.trim() !== '') {
+      images = [product.image]
+    }
 
   return (
     <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">

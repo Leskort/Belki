@@ -61,7 +61,7 @@ export default function CatalogPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mt-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 md:gap-8 mt-8">
             {/* Категория "Все" */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -72,17 +72,17 @@ export default function CatalogPage() {
               <Link href="/catalog/all" className="block">
                 <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20">
                   {/* Фотография категории */}
-                  <div className="relative h-64 sm:h-72 md:h-80 bg-gradient-to-br from-neon-50/20 via-neon-50/10 to-dark-300 overflow-hidden">
+                  <div className="relative h-40 sm:h-64 md:h-72 lg:h-80 bg-gradient-to-br from-neon-50/20 via-neon-50/10 to-dark-300 overflow-hidden">
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-neon-50 text-4xl sm:text-5xl font-bold">ВСЕ</span>
+                      <span className="text-neon-50 text-2xl sm:text-4xl md:text-5xl font-bold">ВСЕ</span>
                     </div>
                   </div>
                   {/* Название категории */}
-                  <div className="p-6">
-                    <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-neon-50 transition-colors text-center">
+                  <div className="p-3 sm:p-4 md:p-6">
+                    <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-white group-hover:text-neon-50 transition-colors text-center">
                       Все товары
                     </h3>
-                    <p className="text-gray-400 text-sm mt-2 text-center">
+                    <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2 text-center">
                       Весь ассортимент товаров
                     </p>
                   </div>
@@ -101,7 +101,7 @@ export default function CatalogPage() {
                 <Link href={`/catalog/${category.slug}`} className="block">
                   <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20">
                     {/* Фотография категории */}
-                    <div className="relative h-64 sm:h-72 md:h-80 bg-dark-300 overflow-hidden">
+                    <div className="relative h-40 sm:h-64 md:h-72 lg:h-80 bg-dark-300 overflow-hidden">
                       {category.image ? (
                         <Image
                           src={category.image}
@@ -112,17 +112,17 @@ export default function CatalogPage() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <span className="text-gray-500 text-sm">Нет изображения</span>
+                          <span className="text-gray-500 text-xs sm:text-sm">Нет изображения</span>
                         </div>
                       )}
                     </div>
                     {/* Название категории */}
-                    <div className="p-6">
-                      <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-neon-50 transition-colors text-center">
+                    <div className="p-3 sm:p-4 md:p-6">
+                      <h3 className="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-white group-hover:text-neon-50 transition-colors text-center">
                         {category.name}
                       </h3>
                       {category.description && (
-                        <p className="text-gray-400 text-sm mt-2 text-center line-clamp-2">
+                        <p className="text-gray-400 text-xs sm:text-sm mt-1 sm:mt-2 text-center line-clamp-2">
                           {category.description}
                         </p>
                       )}
