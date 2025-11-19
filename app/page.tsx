@@ -73,14 +73,14 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col justify-between overflow-hidden z-10 -mt-16 sm:-mt-20 pt-24 sm:pt-28 md:pt-20 md:items-center md:justify-center">
+      <section className="relative min-h-screen flex flex-col justify-between overflow-hidden z-10 pt-28 sm:pt-32 md:pt-20 md:items-center md:justify-center">
         <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 sm:py-12 md:py-20 text-center flex-1 flex flex-col justify-between md:justify-center md:space-y-6">
           {/* Верхняя часть: текст */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="space-y-6 md:space-y-6"
+            className="space-y-6 md:space-y-6 mt-4 sm:mt-6 md:mt-0"
           >
             {/* Main Title */}
             <h1 className="horror-text text-4xl sm:text-5xl md:text-7xl lg:text-9xl mb-4 sm:mb-6 text-horror-glow">
