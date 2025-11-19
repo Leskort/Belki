@@ -3,35 +3,20 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { formatPrice } from '@/lib/utils'
-import { ShoppingCart } from 'lucide-react'
-import { useCart } from '@/contexts/CartContext'
-import { ProductFilters } from '@/components/catalog/ProductFilters'
 import { motion } from 'framer-motion'
 
-interface Product {
+interface Category {
   id: string
   name: string
   slug: string
-  price: number
+  description?: string
   image?: string
-  inStock: boolean
-  category: {
-    id: string
-    name: string
-    slug: string
-  }
 }
 
 export default function CatalogPage() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [categories, setCategories] = useState<any[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null) // null = не выбрано, 'all' = все товары, slug = конкретная категория
-  const [loading, setLoading] = useState(false)
-  const [categoriesLoading, setCategoriesLoading] = useState(true)
-  const { addItem } = useCart()
+  const [categories, setCategories] = useState<Category[]>([])
+  const [loading, setLoading] = useState(true)
 
-  // Загружаем только категории при первой загрузке
   useEffect(() => {
     fetch('/api/categories')
       .then((res) => {
@@ -40,55 +25,16 @@ export default function CatalogPage() {
       })
       .then((data) => {
         setCategories(Array.isArray(data) ? data : [])
-        setCategoriesLoading(false)
+        setLoading(false)
       })
       .catch((error) => {
         console.error('Error fetching categories:', error)
         setCategories([])
-        setCategoriesLoading(false)
+        setLoading(false)
       })
   }, [])
 
-  // Загружаем товары только когда выбрана категория (включая "Все")
-  useEffect(() => {
-    // Не загружаем товары, пока не выбрана категория
-    if (selectedCategory === null) {
-      setProducts([])
-      return
-    }
-
-    setLoading(true)
-    fetch('/api/products')
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch products')
-        return res.json()
-      })
-      .then((data) => {
-        const allProducts = Array.isArray(data) ? data : []
-        // Если выбрано "Все", показываем все товары, иначе фильтруем
-        const filtered = selectedCategory === 'all'
-          ? allProducts
-          : allProducts.filter(
-              (p: Product) => p.category.slug === selectedCategory
-            )
-        setProducts(filtered)
-        setLoading(false)
-      })
-      .catch((error) => {
-        console.error('Error fetching products:', error)
-        setProducts([])
-        setLoading(false)
-      })
-  }, [selectedCategory])
-
-  const handleCategoryChange = (categorySlug: string | null) => {
-    // Если передан null, значит ничего не выбрано
-    // Если передан 'all', значит выбраны все товары
-    // Иначе - конкретная категория
-    setSelectedCategory(categorySlug)
-  }
-
-  if (categoriesLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-24 sm:pt-28">
         <p className="text-gray-400">Загрузка категорий...</p>
@@ -104,98 +50,57 @@ export default function CatalogPage() {
             Каталог товаров
           </h1>
           <p className="text-gray-400 text-lg">
-            Выберите ёлку из нашего ассортимента
+            Выберите категорию из нашего ассортимента
           </p>
         </div>
 
-        <ProductFilters
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategoryChange={handleCategoryChange}
-        />
-
-        {selectedCategory === null ? (
+        {categories.length === 0 ? (
           <div className="text-center py-12 mt-8">
             <p className="text-gray-400 text-lg">
-              Выберите категорию, чтобы увидеть товары
-            </p>
-          </div>
-        ) : loading ? (
-          <div className="text-center py-12 mt-8">
-            <p className="text-gray-400 text-lg">Загрузка товаров...</p>
-          </div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-12 mt-8">
-            <p className="text-gray-400 text-lg">
-              Товары не найдены в тёмном лесу...
+              Категории не найдены
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {products.map((product, index) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mt-8">
+            {categories.map((category, index) => (
               <motion.div
-                key={product.id}
+                key={category.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className="group bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-colors"
+                transition={{ delay: index * 0.1 }}
+                className="group"
               >
-                <Link href={`/catalog/${product.slug}`}>
-                  <div className="relative h-64 bg-dark-300 overflow-hidden">
-                    {product.image ? (
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        unoptimized
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-gray-500">Нет изображения</span>
-                      </div>
-                    )}
-                    {!product.inStock && (
-                      <div className="absolute top-4 right-4 bg-neon-200 text-white px-3 py-1 rounded text-sm font-medium">
-                        Нет в наличии
-                      </div>
-                    )}
+                <Link href={`/catalog/${category.slug}`} className="block">
+                  <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20">
+                    {/* Фотография категории */}
+                    <div className="relative h-64 sm:h-72 md:h-80 bg-dark-300 overflow-hidden">
+                      {category.image ? (
+                        <Image
+                          src={category.image}
+                          alt={category.name}
+                          fill
+                          unoptimized
+                          className="object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="text-gray-500 text-sm">Нет изображения</span>
+                        </div>
+                      )}
+                    </div>
+                    {/* Название категории */}
+                    <div className="p-6">
+                      <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-neon-50 transition-colors text-center">
+                        {category.name}
+                      </h3>
+                      {category.description && (
+                        <p className="text-gray-400 text-sm mt-2 text-center line-clamp-2">
+                          {category.description}
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </Link>
-                <div className="p-4">
-                  <div className="mb-2">
-                    <span className="text-xs text-gray-500">
-                      {product.category.name}
-                    </span>
-                  </div>
-                  <Link href={`/catalog/${product.slug}`}>
-                    <h3 className="text-lg font-bold text-white mb-2 group-hover:text-neon-50 transition-colors">
-                      {product.name}
-                    </h3>
-                  </Link>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xl font-bold text-neon-50 horror-text">
-                      {formatPrice(product.price)}
-                    </span>
-                    <button
-                      onClick={() =>
-                        product.inStock &&
-                        addItem({
-                          id: product.id,
-                          name: product.name,
-                          price: product.price,
-                          image: product.image,
-                          slug: product.slug,
-                        })
-                      }
-                      disabled={!product.inStock}
-                      className="p-2 bg-neon-50 text-white rounded-lg hover:bg-neon-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed horror-glow"
-                      aria-label="Добавить в корзину"
-                    >
-                      <ShoppingCart className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
               </motion.div>
             ))}
           </div>

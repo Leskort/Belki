@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { TreePine, ArrowRight, Star, Sparkles, ChevronDown, ArrowUpDown, X } from 'lucide-react'
+import { TreePine, ArrowRight, Star, Sparkles, ChevronDown, ArrowUpDown, X, ArrowDown } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { ProductsPreview } from '@/components/home/ProductsPreview'
 import { Button } from '@/components/ui/Button'
@@ -183,6 +183,21 @@ export default function HomePage() {
       <section className="relative py-16 px-4 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
+            {/* Неоновая стрелка над квадратиком */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex justify-center mb-4"
+            >
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="text-neon-50"
+              >
+                <ArrowDown className="w-8 h-8 sm:w-10 sm:h-10 drop-shadow-[0_0_10px_rgba(0,255,65,0.8)] filter" />
+              </motion.div>
+            </motion.div>
             <h2 className="horror-text text-4xl md:text-5xl font-bold mb-4 text-white horror-border inline-block px-8 py-4">
               НАШИ ЁЛКИ
             </h2>

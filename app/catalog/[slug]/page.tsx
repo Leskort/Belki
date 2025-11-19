@@ -26,21 +26,54 @@ interface Product {
   }
 }
 
-export default function ProductPage() {
+interface Category {
+  id: string
+  name: string
+  slug: string
+  description?: string
+  image?: string
+}
+
+export default function CatalogSlugPage() {
   const params = useParams()
   const slug = params?.slug as string
   const [product, setProduct] = useState<Product | null>(null)
+  const [category, setCategory] = useState<Category | null>(null)
+  const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [isCategory, setIsCategory] = useState<boolean | null>(null)
   const { addItem } = useCart()
 
   useEffect(() => {
     if (!slug) return
 
-    fetch(`/api/products?slug=${slug}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.length > 0) {
-          setProduct(data[0])
+    // Сначала проверяем, является ли это категорией
+    Promise.all([
+      fetch('/api/categories').then(res => res.json()),
+      fetch('/api/products').then(res => res.json())
+    ])
+      .then(([categories, allProducts]) => {
+        const foundCategory = Array.isArray(categories) 
+          ? categories.find((c: Category) => c.slug === slug)
+          : null
+        
+        if (foundCategory) {
+          // Это категория - показываем товары категории
+          setCategory(foundCategory)
+          setIsCategory(true)
+          const categoryProducts = Array.isArray(allProducts)
+            ? allProducts.filter((p: Product) => p.category.slug === slug)
+            : []
+          setProducts(categoryProducts)
+        } else {
+          // Это товар - показываем товар
+          const foundProduct = Array.isArray(allProducts)
+            ? allProducts.find((p: Product) => p.slug === slug)
+            : null
+          if (foundProduct) {
+            setProduct(foundProduct)
+            setIsCategory(false)
+          }
         }
         setLoading(false)
       })
@@ -49,28 +82,90 @@ export default function ProductPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-400">Загрузка товара...</p>
+      <div className="min-h-screen flex items-center justify-center pt-24 sm:pt-28">
+        <p className="text-gray-400">Загрузка...</p>
       </div>
     )
   }
 
-  if (!product) {
+  // Если это категория - показываем товары категории
+  if (isCategory === true && category) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-400 text-lg mb-4">
-            Товар не найден в тёмном лесу...
-          </p>
-          <Link href="/catalog">
-            <Button variant="outline">Вернуться в каталог</Button>
+      <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <Link
+            href="/catalog"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-neon-50 transition-colors mb-6 sm:mb-8"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            Назад в каталог
           </Link>
+
+          <div className="mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 horror-text">
+              {category.name}
+            </h1>
+            {category.description && (
+              <p className="text-gray-400 text-lg">
+                {category.description}
+              </p>
+            )}
+          </div>
+
+          {products.length === 0 ? (
+            <div className="text-center py-12 mt-8">
+              <p className="text-gray-400 text-lg">
+                Товары не найдены в этой категории
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-8">
+              {products.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="group"
+                >
+                  <Link href={`/catalog/${product.slug}`} className="block">
+                    <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20">
+                      {/* Фотография */}
+                      <div className="relative h-48 sm:h-56 md:h-64 bg-dark-300 overflow-hidden">
+                        {product.image ? (
+                          <Image
+                            src={product.image}
+                            alt={product.name}
+                            fill
+                            unoptimized
+                            className="object-cover group-hover:scale-110 transition-transform duration-300"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <span className="text-gray-500 text-sm">Нет изображения</span>
+                          </div>
+                        )}
+                      </div>
+                      {/* Название */}
+                      <div className="p-4">
+                        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-neon-50 transition-colors text-center">
+                          {product.name}
+                        </h3>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     )
   }
 
-  const images = product.images
+  // Если это товар - показываем страницу товара
+  if (isCategory === false && product) {
+    const images = product.images
     ? (JSON.parse(product.images) as string[])
     : product.image
     ? [product.image]
@@ -183,6 +278,21 @@ export default function ProductPage() {
             </div>
           </motion.div>
         </div>
+      </div>
+    </div>
+    )
+  }
+
+  // Если ничего не найдено
+  return (
+    <div className="min-h-screen flex items-center justify-center pt-24 sm:pt-28">
+      <div className="text-center">
+        <p className="text-gray-400 text-lg mb-4">
+          Категория или товар не найдены в тёмном лесу...
+        </p>
+        <Link href="/catalog">
+          <Button variant="outline">Вернуться в каталог</Button>
+        </Link>
       </div>
     </div>
   )
