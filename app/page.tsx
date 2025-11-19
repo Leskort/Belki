@@ -11,15 +11,65 @@ import { useEffect, useRef, useState } from 'react'
 export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [videoError, setVideoError] = useState(false)
+  const [videoLoaded, setVideoLoaded] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 })
 
   useEffect(() => {
-    // Принудительно запускаем видео при загрузке страницы
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
+    const video = videoRef.current
+    if (!video) return
+
+    // Принудительно загружаем видео
+    video.load()
+
+    // Обработка успешной загрузки видео
+    const handleLoadedData = () => {
+      setVideoLoaded(true)
+      // Принудительно запускаем воспроизведение
+      video.play().catch((error) => {
         console.log('Video autoplay prevented:', error)
-        setVideoError(true)
+        // Не устанавливаем ошибку, просто логируем
       })
+    }
+
+    // Обработка ошибки загрузки
+    const handleError = () => {
+      console.error('Video failed to load')
+      setVideoError(true)
+    }
+
+    // Обработка начала воспроизведения
+    const handlePlay = () => {
+      setVideoLoaded(true)
+    }
+
+    // Добавляем обработчики событий
+    video.addEventListener('loadeddata', handleLoadedData)
+    video.addEventListener('error', handleError)
+    video.addEventListener('play', handlePlay)
+
+    // Пытаемся запустить видео сразу
+    const tryPlay = async () => {
+      try {
+        video.muted = true
+        video.playsInline = true
+        await video.play()
+        setVideoLoaded(true)
+      } catch (error) {
+        console.log('Initial play failed, will retry:', error)
+        // Пробуем еще раз после небольшой задержки
+        setTimeout(() => {
+          video.play().catch(() => {
+            console.log('Retry play failed')
+          })
+        }, 500)
+      }
+    }
+
+    // Если видео уже загружено, запускаем сразу
+    if (video.readyState >= 2) {
+      tryPlay()
+    } else {
+      video.addEventListener('canplay', tryPlay, { once: true })
     }
 
     // Параллакс эффект - слежение за курсором
@@ -30,39 +80,56 @@ export default function HomePage() {
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      video.removeEventListener('loadeddata', handleLoadedData)
+      video.removeEventListener('error', handleError)
+      video.removeEventListener('play', handlePlay)
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
   }, [])
 
   return (
     <div className="min-h-screen relative">
       {/* Fullscreen Background Video */}
-      {!videoError && (
-        <div className="fixed inset-0 w-full h-full z-0">
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
-            onError={() => setVideoError(true)}
-            className="absolute inset-0 w-full h-full object-cover opacity-30"
-            style={{
-              width: '100vw',
-              height: '100vh',
-              objectFit: 'cover',
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              zIndex: 0,
-            }}
-          >
-            <source src="/videos/forest-background.mp4" type="video/mp4" />
-            <source src="/videos/horror-background.mp4" type="video/mp4" />
-          </video>
-          {/* Overlay для затемнения */}
-          <div className="absolute inset-0 bg-gradient-to-b from-horror-dark/80 via-horror-dark/60 to-horror-darker/80" />
-        </div>
-      )}
+      <div className="fixed inset-0 w-full h-full z-0">
+        {!videoError ? (
+          <>
+            <video
+              ref={videoRef}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                videoLoaded ? 'opacity-30' : 'opacity-0'
+              }`}
+              style={{
+                width: '100vw',
+                height: '100vh',
+                objectFit: 'cover',
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                zIndex: 0,
+              }}
+            >
+              <source src="/videos/forest-background.mp4" type="video/mp4" />
+              <source src="/videos/horror-background.mp4" type="video/mp4" />
+            </video>
+            {/* Fallback фон на случай, если видео не загрузилось */}
+            {!videoLoaded && (
+              <div className="absolute inset-0 bg-gradient-to-br from-dark-50 via-dark-100 to-dark-200" />
+            )}
+          </>
+        ) : (
+          /* Fallback фон если видео не загрузилось */
+          <div className="absolute inset-0 bg-gradient-to-br from-dark-50 via-dark-100 to-dark-200" />
+        )}
+        {/* Overlay для затемнения */}
+        <div className="absolute inset-0 bg-gradient-to-b from-horror-dark/80 via-horror-dark/60 to-horror-darker/80" />
+      </div>
 
       {/* Параллакс эффект - градиентное свечение */}
       <div
