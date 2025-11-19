@@ -9,6 +9,7 @@ import { ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { Button } from '@/components/ui/Button'
 import { ProductCard } from '@/components/catalog/ProductCard'
+import { motion } from 'framer-motion'
 
 interface Product {
   id: string
