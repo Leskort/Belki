@@ -6,6 +6,8 @@ import { formatPrice } from '@/lib/utils'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 interface CartModalProps {
   isOpen: boolean
@@ -14,8 +16,27 @@ interface CartModalProps {
 
 export function CartModal({ isOpen, onClose }: CartModalProps) {
   const { items, updateQuantity, removeItem, total, clearCart } = useCart()
+  const [mounted, setMounted] = useState(false)
 
-  return (
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Предотвращаем скролл body когда модальное окно открыто
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen])
+
+  if (!mounted) return null
+
+  const modalContent = (
     <AnimatePresence mode="wait">
       {isOpen && (
         <>
@@ -25,7 +46,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/80 z-[100] backdrop-blur-sm"
+            className="fixed inset-0 bg-black/80 z-[9999] backdrop-blur-sm"
           />
 
           {/* Modal */}
@@ -34,7 +55,7 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 bottom-0 w-full sm:w-96 md:w-[28rem] bg-dark-100 z-[100] shadow-2xl overflow-y-auto"
+            className="fixed right-0 top-0 bottom-0 w-full sm:w-96 md:w-[28rem] bg-dark-100 z-[9999] shadow-2xl overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 sm:p-6">
@@ -153,6 +174,8 @@ export function CartModal({ isOpen, onClose }: CartModalProps) {
       )}
     </AnimatePresence>
   )
+
+  return createPortal(modalContent, document.body)
 }
 
 

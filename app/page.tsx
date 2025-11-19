@@ -73,13 +73,14 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden z-10 -mt-16 sm:-mt-20 pt-20 sm:pt-24">
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 sm:py-20 text-center">
+      <section className="relative min-h-screen flex flex-col justify-between overflow-hidden z-10 -mt-16 sm:-mt-20 pt-20 sm:pt-24 md:items-center md:justify-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 sm:py-20 text-center flex-1 flex flex-col justify-between md:justify-center md:space-y-6">
+          {/* Верхняя часть: текст */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="space-y-6"
+            className="space-y-6 md:space-y-6"
           >
             {/* Main Title */}
             <h1 className="horror-text text-4xl sm:text-5xl md:text-7xl lg:text-9xl mb-6 text-horror-glow">
@@ -105,9 +106,12 @@ export default function HomePage() {
             >
               Каждая ёлка в нашем каталоге прошла через тёмные леса и готова стать частью вашего дома
             </motion.p>
-            
+          </motion.div>
+          
+          {/* Нижняя часть: иконки и кнопка (на мобильных) */}
+          <div className="flex flex-col justify-end md:block md:space-y-6">
             {/* Feature Icons */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-12 sm:mb-16 md:mb-20">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-6 sm:mb-8 md:mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -162,7 +166,7 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.9, duration: 0.5 }}
-              className="mt-8 sm:mt-12"
+              className="pb-8 sm:pb-12 md:pb-0 md:mt-8 md:mt-12"
             >
               <Link href="/catalog">
                 <Button variant="primary" className="text-lg px-8 py-4 flex items-center gap-2 mx-auto bg-gradient-to-r from-horror-red to-horror-blood hover:from-horror-blood hover:to-horror-red shadow-lg shadow-horror-red/50">
@@ -171,7 +175,7 @@ export default function HomePage() {
                 </Button>
               </Link>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
