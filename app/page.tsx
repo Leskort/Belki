@@ -132,11 +132,11 @@ export default function HomePage() {
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 0 }}
-                  className="w-12 h-12 sm:w-16 sm:h-16 text-forest-50 mb-3"
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3"
                 >
-                  <Star className="w-full h-full fill-forest-50" />
+                  <Star className="w-full h-full fill-white" />
                 </motion.div>
-                <span className="text-xs sm:text-sm text-gray-400">Уникальные</span>
+                <span className="text-xs sm:text-sm text-gray-300">Уникальные</span>
               </motion.div>
               
               <motion.div
@@ -148,11 +148,11 @@ export default function HomePage() {
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                  className="w-12 h-12 sm:w-16 sm:h-16 text-forest-50 mb-3"
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3"
                 >
                   <TreePine className="w-full h-full" />
                 </motion.div>
-                <span className="text-xs sm:text-sm text-gray-400">Живые</span>
+                <span className="text-xs sm:text-sm text-gray-300">Живые</span>
               </motion.div>
               
               <motion.div
@@ -164,11 +164,11 @@ export default function HomePage() {
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-                  className="w-12 h-12 sm:w-16 sm:h-16 text-forest-50 mb-3"
+                  className="w-12 h-12 sm:w-16 sm:h-16 text-white mb-3"
                 >
                   <Sparkles className="w-full h-full" />
                 </motion.div>
-                <span className="text-xs sm:text-sm text-gray-400">Запоминающиеся</span>
+                <span className="text-xs sm:text-sm text-gray-300">Запоминающиеся</span>
               </motion.div>
             </div>
           </motion.div>

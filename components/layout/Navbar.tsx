@@ -71,11 +71,11 @@ export function Navbar() {
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="relative">
               {/* Эффект свечения с анимацией */}
-              <div className="absolute inset-0 bg-forest-50/40 blur-xl rounded-full animate-pulse" />
-              <div className="absolute inset-0 bg-forest-50/20 blur-lg rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
-              <TreePine className="relative w-10 h-10 text-forest-50 group-hover:text-forest-100 transition-all duration-300 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(13,40,24,0.9)] filter" />
+              <div className="absolute inset-0 bg-white/30 blur-xl rounded-full animate-pulse" />
+              <div className="absolute inset-0 bg-white/20 blur-lg rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
+              <TreePine className="relative w-10 h-10 text-white group-hover:text-gray-100 transition-all duration-300 group-hover:scale-110 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)] filter" />
             </div>
-            <span className="text-2xl font-bold horror-text bg-gradient-to-r from-forest-50 to-forest-100 bg-clip-text text-transparent group-hover:from-forest-100 group-hover:to-forest-50 transition-all duration-300">
+            <span className="text-2xl font-bold horror-text bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent group-hover:from-gray-200 group-hover:to-white transition-all duration-300">
               ЁЛКИ
             </span>
           </Link>
