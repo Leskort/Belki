@@ -14,6 +14,23 @@
     @apply bg-dark-50 text-white;
     font-family: system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
+    /* Поддержка safe area для iPhone с вырезом */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    /* Минимальная высота для скрытия панели Safari */
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  html {
+    /* Поддержка safe area для iPhone с вырезом */
+    height: -webkit-fill-available;
+  }
+
+  /* Скрытие панели Safari при прокрутке */
+  @supports (-webkit-touch-callout: none) {
+    body {
+      min-height: -webkit-fill-available;
+    }
   }
 }
 
