@@ -54,26 +54,38 @@ export default function CatalogSlugPage() {
       fetch('/api/products').then(res => res.json())
     ])
       .then(([categories, allProducts]) => {
-        const foundCategory = Array.isArray(categories) 
-          ? categories.find((c: Category) => c.slug === slug)
-          : null
-        
-        if (foundCategory) {
-          // Это категория - показываем товары категории
-          setCategory(foundCategory)
+        // Проверяем, если это "all" - показываем все товары
+        if (slug === 'all') {
+          setCategory({
+            id: 'all',
+            name: 'Все товары',
+            slug: 'all',
+            description: 'Весь ассортимент товаров',
+          })
           setIsCategory(true)
-          const categoryProducts = Array.isArray(allProducts)
-            ? allProducts.filter((p: Product) => p.category.slug === slug)
-            : []
-          setProducts(categoryProducts)
+          setProducts(Array.isArray(allProducts) ? allProducts : [])
         } else {
-          // Это товар - показываем товар
-          const foundProduct = Array.isArray(allProducts)
-            ? allProducts.find((p: Product) => p.slug === slug)
+          const foundCategory = Array.isArray(categories) 
+            ? categories.find((c: Category) => c.slug === slug)
             : null
-          if (foundProduct) {
-            setProduct(foundProduct)
-            setIsCategory(false)
+          
+          if (foundCategory) {
+            // Это категория - показываем товары категории
+            setCategory(foundCategory)
+            setIsCategory(true)
+            const categoryProducts = Array.isArray(allProducts)
+              ? allProducts.filter((p: Product) => p.category.slug === slug)
+              : []
+            setProducts(categoryProducts)
+          } else {
+            // Это товар - показываем товар
+            const foundProduct = Array.isArray(allProducts)
+              ? allProducts.find((p: Product) => p.slug === slug)
+              : null
+            if (foundProduct) {
+              setProduct(foundProduct)
+              setIsCategory(false)
+            }
           }
         }
         setLoading(false)

@@ -62,6 +62,34 @@ export default function CatalogPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mt-8">
+            {/* Категория "Все" */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0 }}
+              className="group"
+            >
+              <Link href="/catalog/all" className="block">
+                <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20">
+                  {/* Фотография категории */}
+                  <div className="relative h-64 sm:h-72 md:h-80 bg-gradient-to-br from-neon-50/20 via-neon-50/10 to-dark-300 overflow-hidden">
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-neon-50 text-4xl sm:text-5xl font-bold">ВСЕ</span>
+                    </div>
+                  </div>
+                  {/* Название категории */}
+                  <div className="p-6">
+                    <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-neon-50 transition-colors text-center">
+                      Все товары
+                    </h3>
+                    <p className="text-gray-400 text-sm mt-2 text-center">
+                      Весь ассортимент товаров
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+            
             {categories.map((category, index) => (
               <motion.div
                 key={category.id}
