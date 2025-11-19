@@ -8,7 +8,7 @@ import { formatPrice } from '@/lib/utils'
 import { ShoppingCart, ArrowLeft } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { Button } from '@/components/ui/Button'
-import { motion } from 'framer-motion'
+import { ProductCard } from '@/components/catalog/ProductCard'
 
 interface Product {
   id: string
@@ -119,42 +119,25 @@ export default function CatalogSlugPage() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-8">
               {products.map((product, index) => (
-                <motion.div
+                <ProductCard
                   key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className="group"
-                >
-                  <Link href={`/catalog/${product.slug}`} className="block h-full">
-                    <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20 h-full flex flex-col">
-                      {/* Фотография */}
-                      <div className="relative h-64 sm:h-72 md:h-80 bg-dark-300 overflow-hidden flex-shrink-0">
-                        {product.image ? (
-                          <Image
-                            src={product.image}
-                            alt={product.name}
-                            fill
-                            unoptimized
-                            className="object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-dark-200">
-                            <span className="text-gray-500 text-sm">Нет изображения</span>
-                          </div>
-                        )}
-                      </div>
-                      {/* Название */}
-                      <div className="p-4 sm:p-6 flex-1 flex items-center justify-center bg-dark-200">
-                        <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-neon-50 transition-colors text-center">
-                          {product.name}
-                        </h3>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    slug: product.slug,
+                    price: product.price,
+                    image: product.image,
+                    inStock: product.inStock,
+                    description: product.description,
+                    category: {
+                      name: product.category.name,
+                      slug: product.category.slug,
+                    },
+                  }}
+                  index={index}
+                />
               ))}
             </div>
           )}
