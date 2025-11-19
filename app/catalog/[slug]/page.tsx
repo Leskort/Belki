@@ -1,15 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
-import { ShoppingCart, ArrowLeft } from 'lucide-react'
+import { ShoppingCart, ArrowLeft, ArrowUp, ArrowDown } from 'lucide-react'
 import { useCart } from '@/contexts/CartContext'
 import { Button } from '@/components/ui/Button'
 import { ProductCard } from '@/components/catalog/ProductCard'
 import { motion } from 'framer-motion'
+
+type SortOption = 'popular' | 'name' | 'price'
+type SortDirection = 'asc' | 'desc'
 
 interface Product {
   id: string
@@ -43,7 +46,37 @@ export default function CatalogSlugPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [isCategory, setIsCategory] = useState<boolean | null>(null)
+  const [sortBy, setSortBy] = useState<SortOption>('popular')
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const { addItem } = useCart()
+
+  // Сортировка товаров
+  const sortedProducts = useMemo(() => {
+    const sorted = [...products].sort((a, b) => {
+      if (sortBy === 'name') {
+        return sortDirection === 'asc'
+          ? a.name.localeCompare(b.name, 'ru')
+          : b.name.localeCompare(a.name, 'ru')
+      }
+      if (sortBy === 'price') {
+        return sortDirection === 'asc' ? a.price - b.price : b.price - a.price
+      }
+      // popular - по умолчанию, без сортировки (или по дате создания)
+      return 0
+    })
+    return sorted
+  }, [products, sortBy, sortDirection])
+
+  const handleSort = (option: SortOption) => {
+    if (sortBy === option) {
+      // Если уже выбрана эта опция, меняем направление
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+    } else {
+      // Если новая опция, устанавливаем её и направление по умолчанию
+      setSortBy(option)
+      setSortDirection('asc')
+    }
+  }
 
   useEffect(() => {
     if (!slug) return
@@ -125,6 +158,52 @@ export default function CatalogSlugPage() {
             )}
           </div>
 
+          {/* Сортировка */}
+          {products.length > 0 && (
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="text-gray-400 text-sm">Сортировка:</span>
+              <button
+                onClick={() => handleSort('popular')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                  sortBy === 'popular'
+                    ? 'bg-neon-50 text-white horror-glow'
+                    : 'bg-dark-200 text-gray-300 hover:bg-dark-300'
+                }`}
+              >
+                По популярности
+                {sortBy === 'popular' && (
+                  sortDirection === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
+                )}
+              </button>
+              <button
+                onClick={() => handleSort('name')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                  sortBy === 'name'
+                    ? 'bg-neon-50 text-white horror-glow'
+                    : 'bg-dark-200 text-gray-300 hover:bg-dark-300'
+                }`}
+              >
+                По названию
+                {sortBy === 'name' && (
+                  sortDirection === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
+                )}
+              </button>
+              <button
+                onClick={() => handleSort('price')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
+                  sortBy === 'price'
+                    ? 'bg-neon-50 text-white horror-glow'
+                    : 'bg-dark-200 text-gray-300 hover:bg-dark-300'
+                }`}
+              >
+                По цене
+                {sortBy === 'price' && (
+                  sortDirection === 'asc' ? <ArrowUp className="w-4 h-4" /> : <ArrowDown className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+          )}
+
           {products.length === 0 ? (
             <div className="text-center py-12 mt-8">
               <p className="text-gray-400 text-lg">
@@ -133,7 +212,7 @@ export default function CatalogSlugPage() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 mt-8">
-              {products.map((product, index) => (
+              {sortedProducts.map((product, index) => (
                 <ProductCard
                   key={product.id}
                   product={{
