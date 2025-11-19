@@ -128,10 +128,10 @@ export default function CatalogSlugPage() {
                   transition={{ delay: index * 0.05 }}
                   className="group"
                 >
-                  <Link href={`/catalog/${product.slug}`} className="block">
-                    <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20">
+                  <Link href={`/catalog/${product.slug}`} className="block h-full">
+                    <div className="bg-dark-200 rounded-lg overflow-hidden border border-dark-300 hover:border-neon-50/50 transition-all duration-300 hover:shadow-lg hover:shadow-neon-50/20 h-full flex flex-col">
                       {/* Фотография */}
-                      <div className="relative h-48 sm:h-56 md:h-64 bg-dark-300 overflow-hidden">
+                      <div className="relative h-64 sm:h-72 md:h-80 bg-dark-300 overflow-hidden flex-shrink-0">
                         {product.image ? (
                           <Image
                             src={product.image}
@@ -141,13 +141,13 @@ export default function CatalogSlugPage() {
                             className="object-cover group-hover:scale-110 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center">
+                          <div className="w-full h-full flex items-center justify-center bg-dark-200">
                             <span className="text-gray-500 text-sm">Нет изображения</span>
                           </div>
                         )}
                       </div>
                       {/* Название */}
-                      <div className="p-4">
+                      <div className="p-4 sm:p-6 flex-1 flex items-center justify-center bg-dark-200">
                         <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-neon-50 transition-colors text-center">
                           {product.name}
                         </h3>
