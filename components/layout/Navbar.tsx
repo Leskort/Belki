@@ -227,83 +227,95 @@ export function Navbar() {
             {/* Search - Desktop */}
             <div className="relative hidden lg:block">
               {showSearch ? (
-                <div className="relative">
-                  <form onSubmit={handleSearch} className="flex items-center gap-2">
-                    <div className="relative search-dropdown">
+                <>
+                  {/* Backdrop для затемнения */}
+                  <div
+                    className="fixed inset-0 bg-black/50 z-[90]"
+                    onClick={() => {
+                      setShowSearch(false)
+                      setSearchQuery('')
+                      setShowResults(false)
+                    }}
+                  />
+                  {/* Поиск в фиксированной позиции справа */}
+                  <div className="fixed right-4 top-24 z-[100] search-dropdown" style={{ top: 'calc(4rem + 0.5rem)' }}>
+                    <form onSubmit={handleSearch} onClick={(e) => e.stopPropagation()}>
                       <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={searchQuery}
-                          onChange={(e) => {
-                            setSearchQuery(e.target.value)
-                            setShowResults(true)
-                          }}
-                          onFocus={() => setShowResults(searchResults.length > 0 || hasMoreResults)}
-                          placeholder="Поиск товаров и категорий..."
-                          autoFocus
-                          className="pl-10 pr-4 py-2.5 bg-dark-200 border border-dark-300 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-50 focus:ring-2 focus:ring-neon-50/20 transition-all w-80"
-                        />
-                      </div>
-                      {/* Выпадающий список результатов */}
-                      {showResults && (searchResults.length > 0 || hasMoreResults) && (
-                        <div className="absolute top-full left-0 right-0 mt-2 bg-dark-200 border border-dark-300 rounded-lg shadow-2xl z-[100] max-h-96 overflow-y-auto search-dropdown">
-                          {searchResults.length > 0 && (
-                            <div className="py-2">
-                              <div className="px-3 py-2 text-xs text-gray-400 uppercase tracking-wide border-b border-dark-300">
-                                Результаты поиска
-                              </div>
-                              {searchResults.map((result) => (
-                                <button
-                                  key={`${result.type}-${result.id}`}
-                                  type="button"
-                                  onClick={() => handleResultClick(result)}
-                                  className="w-full text-left px-4 py-3 hover:bg-dark-300 transition-colors flex items-start gap-3 group"
-                                >
-                                  <div className="flex-1 min-w-0">
-                                    <div className="text-white font-medium group-hover:text-neon-50 transition-colors truncate">
-                                      {result.name}
-                                    </div>
-                                    {result.type === 'product' && result.category && (
-                                      <div className="text-xs text-gray-400 mt-1">
-                                        {result.category.name}
-                                      </div>
-                                    )}
-                                    <div className="text-xs text-gray-500 mt-1.5">
-                                      {result.type === 'product' ? 'Товар' : 'Категория'}
-                                    </div>
-                                  </div>
-                                </button>
-                              ))}
-                            </div>
-                          )}
-                          {hasMoreResults && (
-                            <button
-                              type="button"
-                              onClick={handleViewAll}
-                              className="w-full text-left px-4 py-3 hover:bg-dark-300 transition-colors border-t border-dark-300 text-neon-50 font-medium flex items-center gap-2"
-                            >
-                              <span>Показать все результаты</span>
-                              <span className="text-sm">→</span>
-                            </button>
-                          )}
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                          <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => {
+                              setSearchQuery(e.target.value)
+                              setShowResults(true)
+                            }}
+                            onFocus={() => setShowResults(searchResults.length > 0 || hasMoreResults)}
+                            placeholder="Поиск товаров и категорий..."
+                            autoFocus
+                            className="pl-10 pr-12 py-2.5 bg-dark-200 border border-dark-300 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-50 focus:ring-2 focus:ring-neon-50/20 transition-all w-80 shadow-xl"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowSearch(false)
+                              setSearchQuery('')
+                              setShowResults(false)
+                            }}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                            aria-label="Закрыть поиск"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
                         </div>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowSearch(false)
-                        setSearchQuery('')
-                        setShowResults(false)
-                      }}
-                      className="p-2 text-gray-400 hover:text-white hover:bg-dark-200 rounded-lg transition-colors"
-                      aria-label="Закрыть поиск"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </form>
-                </div>
+                        {/* Выпадающий список результатов */}
+                        {showResults && (searchResults.length > 0 || hasMoreResults) && (
+                          <div className="absolute top-full left-0 right-0 mt-2 bg-dark-200 border border-dark-300 rounded-lg shadow-2xl z-[100] max-h-96 overflow-y-auto search-dropdown">
+                            {searchResults.length > 0 && (
+                              <div className="py-2">
+                                <div className="px-3 py-2 text-xs text-gray-400 uppercase tracking-wide border-b border-dark-300">
+                                  Результаты поиска
+                                </div>
+                                {searchResults.map((result) => (
+                                  <button
+                                    key={`${result.type}-${result.id}`}
+                                    type="button"
+                                    onClick={() => handleResultClick(result)}
+                                    className="w-full text-left px-4 py-3 hover:bg-dark-300 transition-colors flex items-start gap-3 group"
+                                  >
+                                    <div className="flex-1 min-w-0">
+                                      <div className="text-white font-medium group-hover:text-neon-50 transition-colors truncate">
+                                        {result.name}
+                                      </div>
+                                      {result.type === 'product' && result.category && (
+                                        <div className="text-xs text-gray-400 mt-1">
+                                          {result.category.name}
+                                        </div>
+                                      )}
+                                      <div className="text-xs text-gray-500 mt-1.5">
+                                        {result.type === 'product' ? 'Товар' : 'Категория'}
+                                      </div>
+                                    </div>
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                            {hasMoreResults && (
+                              <button
+                                type="button"
+                                onClick={handleViewAll}
+                                className="w-full text-left px-4 py-3 hover:bg-dark-300 transition-colors border-t border-dark-300 text-neon-50 font-medium flex items-center gap-2"
+                              >
+                                <span>Показать все результаты</span>
+                                <span className="text-sm">→</span>
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </>
               ) : (
                 <button
                   onClick={() => setShowSearch(true)}
