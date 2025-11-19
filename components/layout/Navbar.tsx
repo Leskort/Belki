@@ -2,8 +2,9 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { TreePine, Menu, X, Search, Phone, MapPin } from 'lucide-react'
+import { TreePine, Menu, X, Search, Phone, MapPin, ArrowRight } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import { CartIcon } from '@/components/cart/CartIcon'
 import { CallbackModal } from './CallbackModal'
 import { cn } from '@/lib/utils'
@@ -226,106 +227,122 @@ export function Navbar() {
           <div className="flex items-center space-x-3 sm:space-x-4">
             {/* Search - Desktop */}
             <div className="relative hidden lg:block">
-              {showSearch ? (
-                <>
-                  {/* Backdrop для затемнения */}
-                  <div
-                    className="fixed inset-0 bg-black/50 z-[90]"
-                    onClick={() => {
-                      setShowSearch(false)
-                      setSearchQuery('')
-                      setShowResults(false)
-                    }}
-                  />
-                  {/* Поиск в фиксированной позиции справа */}
-                  <div className="fixed right-4 top-24 z-[100] search-dropdown" style={{ top: 'calc(4rem + 0.5rem)' }}>
-                    <form onSubmit={handleSearch} onClick={(e) => e.stopPropagation()}>
+              <div className="relative search-dropdown">
+                {showSearch ? (
+                  <motion.div
+                    initial={{ width: 'auto', opacity: 0 }}
+                    animate={{ width: '420px', opacity: 1 }}
+                    exit={{ width: 'auto', opacity: 0 }}
+                    transition={{ duration: 0.3, ease: 'easeInOut' }}
+                    className="relative"
+                  >
+                    <form onSubmit={handleSearch} className="relative">
                       <div className="relative">
-                        <div className="relative">
-                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => {
-                              setSearchQuery(e.target.value)
-                              setShowResults(true)
-                            }}
-                            onFocus={() => setShowResults(searchResults.length > 0 || hasMoreResults)}
-                            placeholder="Поиск товаров и категорий..."
-                            autoFocus
-                            className="pl-10 pr-12 py-2.5 bg-dark-200 border border-dark-300 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-50 focus:ring-2 focus:ring-neon-50/20 transition-all w-80 shadow-xl"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setShowSearch(false)
-                              setSearchQuery('')
-                              setShowResults(false)
-                            }}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
-                            aria-label="Закрыть поиск"
-                          >
-                            <X className="w-5 h-5" />
-                          </button>
-                        </div>
-                        {/* Выпадающий список результатов */}
-                        {showResults && (searchResults.length > 0 || hasMoreResults) && (
-                          <div className="absolute top-full left-0 right-0 mt-2 bg-dark-200 border border-dark-300 rounded-lg shadow-2xl z-[100] max-h-96 overflow-y-auto search-dropdown">
-                            {searchResults.length > 0 && (
-                              <div className="py-2">
-                                <div className="px-3 py-2 text-xs text-gray-400 uppercase tracking-wide border-b border-dark-300">
-                                  Результаты поиска
-                                </div>
-                                {searchResults.map((result) => (
-                                  <button
-                                    key={`${result.type}-${result.id}`}
-                                    type="button"
-                                    onClick={() => handleResultClick(result)}
-                                    className="w-full text-left px-4 py-3 hover:bg-dark-300 transition-colors flex items-start gap-3 group"
-                                  >
-                                    <div className="flex-1 min-w-0">
-                                      <div className="text-white font-medium group-hover:text-neon-50 transition-colors truncate">
-                                        {result.name}
-                                      </div>
-                                      {result.type === 'product' && result.category && (
-                                        <div className="text-xs text-gray-400 mt-1">
-                                          {result.category.name}
-                                        </div>
-                                      )}
-                                      <div className="text-xs text-gray-500 mt-1.5">
-                                        {result.type === 'product' ? 'Товар' : 'Категория'}
-                                      </div>
-                                    </div>
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-                            {hasMoreResults && (
-                              <button
-                                type="button"
-                                onClick={handleViewAll}
-                                className="w-full text-left px-4 py-3 hover:bg-dark-300 transition-colors border-t border-dark-300 text-neon-50 font-medium flex items-center gap-2"
-                              >
-                                <span>Показать все результаты</span>
-                                <span className="text-sm">→</span>
-                              </button>
-                            )}
+                        {/* Glass effect поиск */}
+                        <div className="relative backdrop-blur-xl bg-white/5 border border-white/20 rounded-xl shadow-2xl overflow-hidden">
+                          <div className="flex items-center">
+                            <div className="pl-4 pr-2">
+                              <Search className="w-5 h-5 text-gray-300" />
+                            </div>
+                            <input
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => {
+                                setSearchQuery(e.target.value)
+                                setShowResults(true)
+                              }}
+                              onFocus={() => setShowResults(searchResults.length > 0 || hasMoreResults)}
+                              placeholder="Поиск товаров и категорий..."
+                              autoFocus
+                              className="flex-1 py-3 pr-4 bg-transparent text-white placeholder-gray-400 focus:outline-none text-sm"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setShowSearch(false)
+                                setSearchQuery('')
+                                setShowResults(false)
+                              }}
+                              className="p-2 mr-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all"
+                              aria-label="Закрыть поиск"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
                           </div>
+                        </div>
+                        
+                        {/* Выпадающий список результатов с glass effect */}
+                        {showResults && (searchResults.length > 0 || hasMoreResults) && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 right-0 mt-3 backdrop-blur-xl bg-dark-200/95 border border-white/20 rounded-xl shadow-2xl z-[100] max-h-96 overflow-hidden search-dropdown"
+                          >
+                            <div className="overflow-y-auto max-h-96">
+                              {searchResults.length > 0 && (
+                                <div>
+                                  <div className="px-4 py-3 border-b border-white/10">
+                                    <div className="text-xs text-gray-400 uppercase tracking-wider font-medium">
+                                      Результаты поиска
+                                    </div>
+                                  </div>
+                                  <div className="py-2">
+                                    {searchResults.map((result) => (
+                                      <button
+                                        key={`${result.type}-${result.id}`}
+                                        type="button"
+                                        onClick={() => handleResultClick(result)}
+                                        className="w-full text-left px-4 py-3 hover:bg-white/5 transition-all flex items-start gap-3 group"
+                                      >
+                                        <div className="flex-1 min-w-0">
+                                          <div className="text-white font-medium group-hover:text-neon-50 transition-colors truncate text-sm">
+                                            {result.name}
+                                          </div>
+                                          {result.type === 'product' && result.category && (
+                                            <div className="text-xs text-gray-400 mt-1">
+                                              {result.category.name}
+                                            </div>
+                                          )}
+                                          <div className="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                                            <span className={`inline-block w-1.5 h-1.5 rounded-full ${
+                                              result.type === 'product' ? 'bg-neon-50' : 'bg-blue-400'
+                                            }`} />
+                                            {result.type === 'product' ? 'Товар' : 'Категория'}
+                                          </div>
+                                        </div>
+                                      </button>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                              {hasMoreResults && (
+                                <button
+                                  type="button"
+                                  onClick={handleViewAll}
+                                  className="w-full text-left px-4 py-3 hover:bg-white/5 transition-all border-t border-white/10 text-neon-50 font-medium flex items-center justify-between group"
+                                >
+                                  <span className="text-sm">Показать все результаты</span>
+                                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                </button>
+                              )}
+                            </div>
+                          </motion.div>
                         )}
                       </div>
                     </form>
-                  </div>
-                </>
-              ) : (
-                <button
-                  onClick={() => setShowSearch(true)}
-                  className="p-2 text-white hover:text-neon-50 transition-colors rounded-lg hover:bg-white/10 flex items-center gap-2"
-                  aria-label="Поиск"
-                >
-                  <Search className="w-5 h-5" />
-                  <span className="hidden xl:inline text-sm">Поиск</span>
-                </button>
-              )}
+                  </motion.div>
+                ) : (
+                  <button
+                    onClick={() => setShowSearch(true)}
+                    className="p-2 text-white hover:text-neon-50 transition-all rounded-lg hover:bg-white/10 flex items-center gap-2 group"
+                    aria-label="Поиск"
+                  >
+                    <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <span className="hidden xl:inline text-sm">Поиск</span>
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Phone Number */}
