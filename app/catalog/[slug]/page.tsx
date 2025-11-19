@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
@@ -40,7 +40,9 @@ interface Category {
 
 export default function CatalogSlugPage() {
   const params = useParams()
+  const searchParams = useSearchParams()
   const slug = params?.slug as string
+  const searchQuery = searchParams?.get('search') || ''
   const [product, setProduct] = useState<Product | null>(null)
   const [category, setCategory] = useState<Category | null>(null)
   const [products, setProducts] = useState<Product[]>([])
@@ -50,9 +52,19 @@ export default function CatalogSlugPage() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const { addItem } = useCart()
 
+  // Фильтрация по поисковому запросу
+  const filteredProducts = useMemo(() => {
+    if (!searchQuery) return products
+    const query = searchQuery.toLowerCase()
+    return products.filter(p => 
+      p.name.toLowerCase().includes(query) ||
+      p.description?.toLowerCase().includes(query)
+    )
+  }, [products, searchQuery])
+
   // Сортировка товаров
   const sortedProducts = useMemo(() => {
-    const sorted = [...products].sort((a, b) => {
+    const sorted = [...filteredProducts].sort((a, b) => {
       if (sortBy === 'name') {
         return sortDirection === 'asc'
           ? a.name.localeCompare(b.name, 'ru')
@@ -65,7 +77,7 @@ export default function CatalogSlugPage() {
       return 0
     })
     return sorted
-  }, [products, sortBy, sortDirection])
+  }, [filteredProducts, sortBy, sortDirection])
 
   const handleSort = (option: SortOption) => {
     if (sortBy === option) {
@@ -149,11 +161,16 @@ export default function CatalogSlugPage() {
 
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 horror-text">
-              {category.name}
+              {searchQuery ? `Результаты поиска: "${searchQuery}"` : category.name}
             </h1>
-            {category.description && (
+            {!searchQuery && category.description && (
               <p className="text-gray-400 text-lg">
                 {category.description}
+              </p>
+            )}
+            {searchQuery && (
+              <p className="text-gray-400 text-lg">
+                Найдено товаров: {sortedProducts.length}
               </p>
             )}
           </div>
@@ -204,10 +221,13 @@ export default function CatalogSlugPage() {
             </div>
           )}
 
-          {products.length === 0 ? (
+          {sortedProducts.length === 0 ? (
             <div className="text-center py-12 mt-8">
               <p className="text-gray-400 text-lg">
-                Товары не найдены в этой категории
+                {searchQuery 
+                  ? `Товары по запросу "${searchQuery}" не найдены`
+                  : 'Товары не найдены в этой категории'
+                }
               </p>
             </div>
           ) : (

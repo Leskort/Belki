@@ -1,10 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { TreePine, Menu, X } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { TreePine, Menu, X, Search, Phone } from 'lucide-react'
 import { useState } from 'react'
 import { CartIcon } from '@/components/cart/CartIcon'
+import { CallbackModal } from './CallbackModal'
 import { cn } from '@/lib/utils'
 
 const navLinks = [
@@ -61,7 +62,20 @@ function TelegramIcon({ className }: { className?: string }) {
 
 export function Navbar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [callbackModalOpen, setCallbackModalOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [showSearch, setShowSearch] = useState(false)
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/catalog/all?search=${encodeURIComponent(searchQuery.trim())}`)
+      setSearchQuery('')
+      setShowSearch(false)
+    }
+  }
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-dark-100/95 backdrop-blur-md border-b border-dark-300/50 shadow-lg">
@@ -81,16 +95,16 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'text-sm font-medium transition-all duration-300 relative group/link',
+                  'text-base font-medium transition-all duration-300 relative group/link',
                   pathname === link.href
                     ? 'text-neon-50 horror-text'
-                    : 'text-gray-300 hover:text-neon-50'
+                    : 'text-white hover:text-neon-50'
                 )}
               >
                 {link.label}
@@ -105,8 +119,62 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Social Icons and Cart */}
+          {/* Right Side: Search, Phone, Social, Cart */}
           <div className="flex items-center space-x-3 sm:space-x-4">
+            {/* Search */}
+            <div className="relative hidden md:block">
+              {showSearch ? (
+                <form onSubmit={handleSearch} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Поиск..."
+                    autoFocus
+                    className="px-4 py-2 bg-dark-200 border border-dark-300 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-50 transition-colors w-48"
+                    onBlur={() => {
+                      if (!searchQuery) {
+                        setTimeout(() => setShowSearch(false), 200)
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowSearch(false)
+                      setSearchQuery('')
+                    }}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </form>
+              ) : (
+                <button
+                  onClick={() => setShowSearch(true)}
+                  className="p-2 text-white hover:text-neon-50 transition-colors rounded-lg hover:bg-white/10"
+                  aria-label="Поиск"
+                >
+                  <Search className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+
+            {/* Phone Number */}
+            <div className="hidden lg:flex flex-col items-end">
+              <a
+                href="tel:+375447788813"
+                className="text-white text-sm font-medium hover:text-neon-50 transition-colors"
+              >
+                +375 (44) 778-88-13
+              </a>
+              <button
+                onClick={() => setCallbackModalOpen(true)}
+                className="text-xs text-gray-400 hover:text-neon-50 transition-colors mt-0.5"
+              >
+                Заказать звонок
+              </button>
+            </div>
             {/* Instagram */}
             <a
               href="https://instagram.com"
@@ -134,7 +202,7 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-300 hover:text-neon-50 transition-colors rounded-lg hover:bg-white/10"
+              className="md:hidden p-2 text-white hover:text-neon-50 transition-colors rounded-lg hover:bg-white/10"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -150,23 +218,58 @@ export function Navbar() {
         {mobileMenuOpen && (
           <div className="md:hidden py-4 border-t border-dark-300/50">
             <div className="flex flex-col space-y-3">
+              {/* Mobile Search */}
+              <form onSubmit={handleSearch} className="px-2">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Поиск..."
+                    className="w-full pl-10 pr-4 py-2 bg-dark-200 border border-dark-300 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-neon-50 transition-colors"
+                  />
+                </div>
+              </form>
+
+              {/* Mobile Phone */}
+              <div className="px-2 py-2 border-b border-dark-300/50">
+                <a
+                  href="tel:+375447788813"
+                  className="text-white text-base font-medium hover:text-neon-50 transition-colors flex items-center gap-2"
+                >
+                  <Phone className="w-5 h-5" />
+                  +375 (44) 778-88-13
+                </a>
+                <button
+                  onClick={() => {
+                    setCallbackModalOpen(true)
+                    setMobileMenuOpen(false)
+                  }}
+                  className="text-sm text-gray-400 hover:text-neon-50 transition-colors mt-1"
+                >
+                  Заказать звонок
+                </button>
+              </div>
+
+              {/* Navigation Links */}
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-neon-50 px-2 py-2 rounded-lg hover:bg-white/5',
+                    'text-base font-medium transition-colors hover:text-neon-50 px-2 py-2 rounded-lg hover:bg-white/5',
                     pathname === link.href
                       ? 'text-neon-50 horror-text bg-white/10'
-                      : 'text-gray-300'
+                      : 'text-white'
                   )}
                 >
                   {link.label}
                 </Link>
               ))}
               {/* Social links в мобильном меню */}
-              <div className="flex items-center space-x-4 pt-2 border-t border-dark-300/50">
+              <div className="flex items-center space-x-4 pt-2 border-t border-dark-300/50 px-2">
                 <a
                   href="https://instagram.com"
                   target="_blank"
@@ -190,6 +293,9 @@ export function Navbar() {
           </div>
         )}
       </div>
+
+      {/* Callback Modal */}
+      <CallbackModal isOpen={callbackModalOpen} onClose={() => setCallbackModalOpen(false)} />
     </nav>
   )
 }
