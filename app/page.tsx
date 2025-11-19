@@ -109,7 +109,7 @@ export default function HomePage() {
           </motion.div>
           
           {/* Нижняя часть: иконки и кнопка (на мобильных) */}
-          <div className="flex flex-col justify-end md:block md:space-y-6 mt-4 sm:mt-6 md:mt-0">
+          <div className="flex flex-col justify-end md:block md:space-y-6 mt-4 sm:mt-6 md:mt-0 -translate-y-4 sm:-translate-y-6 md:translate-y-0">
             {/* Feature Icons */}
             <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-12 mb-6 sm:mb-8 md:mb-12">
               <motion.div
@@ -169,10 +169,10 @@ export default function HomePage() {
               className="pb-8 sm:pb-12 md:pb-0 md:mt-8 md:mt-12"
             >
               <Link href="/catalog">
-                <Button variant="primary" className="text-lg px-8 py-4 flex items-center gap-2 mx-auto bg-gradient-to-r from-horror-red to-horror-blood hover:from-horror-blood hover:to-horror-red shadow-lg shadow-horror-red/50">
-                  ВЫБРАТЬ ЁЛКУ
-                  <ArrowRight className="w-6 h-6" />
-                </Button>
+                <button className="text-lg px-8 py-4 flex items-center gap-2 mx-auto rounded-lg font-bold transition-all duration-300 glass-effect hover:scale-105 shadow-xl">
+                  <span className="text-white">ВЫБРАТЬ ЁЛКУ</span>
+                  <ArrowRight className="w-6 h-6 text-white" />
+                </button>
               </Link>
             </motion.div>
           </div>
