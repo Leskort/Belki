@@ -26,52 +26,78 @@ interface Product {
 export default function CatalogPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<any[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null) // null = не выбрано, 'all' = все товары, slug = конкретная категория
+  const [loading, setLoading] = useState(false)
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
   const { addItem } = useCart()
 
+  // Загружаем только категории при первой загрузке
   useEffect(() => {
-    Promise.all([
-      fetch('/api/products')
-        .then((res) => {
-          if (!res.ok) throw new Error('Failed to fetch products')
-          return res.json()
-        })
-        .then((data) => Array.isArray(data) ? data : []),
-      fetch('/api/categories')
-        .then((res) => {
-          if (!res.ok) throw new Error('Failed to fetch categories')
-          return res.json()
-        })
-        .then((data) => Array.isArray(data) ? data : []),
-    ])
-      .then(([productsData, categoriesData]) => {
-        setProducts(productsData)
-        setCategories(categoriesData)
-        setLoading(false)
+    fetch('/api/categories')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch categories')
+        return res.json()
+      })
+      .then((data) => {
+        setCategories(Array.isArray(data) ? data : [])
+        setCategoriesLoading(false)
       })
       .catch((error) => {
-        console.error('Error fetching data:', error)
-        setProducts([])
+        console.error('Error fetching categories:', error)
         setCategories([])
-        setLoading(false)
+        setCategoriesLoading(false)
       })
   }, [])
 
-  const filteredProducts = selectedCategory
-    ? products.filter((p) => p.category.slug === selectedCategory)
-    : products
+  // Загружаем товары только когда выбрана категория (включая "Все")
+  useEffect(() => {
+    // Не загружаем товары, пока не выбрана категория
+    if (selectedCategory === null) {
+      setProducts([])
+      return
+    }
 
-  if (loading) {
+    setLoading(true)
+    fetch('/api/products')
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch products')
+        return res.json()
+      })
+      .then((data) => {
+        const allProducts = Array.isArray(data) ? data : []
+        // Если выбрано "Все", показываем все товары, иначе фильтруем
+        const filtered = selectedCategory === 'all'
+          ? allProducts
+          : allProducts.filter(
+              (p: Product) => p.category.slug === selectedCategory
+            )
+        setProducts(filtered)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error('Error fetching products:', error)
+        setProducts([])
+        setLoading(false)
+      })
+  }, [selectedCategory])
+
+  const handleCategoryChange = (categorySlug: string | null) => {
+    // Если передан null, значит ничего не выбрано
+    // Если передан 'all', значит выбраны все товары
+    // Иначе - конкретная категория
+    setSelectedCategory(categorySlug)
+  }
+
+  if (categoriesLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-400">Загрузка каталога...</p>
+      <div className="min-h-screen flex items-center justify-center pt-24 sm:pt-28">
+        <p className="text-gray-400">Загрузка категорий...</p>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen pt-24 sm:pt-28 pb-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 horror-text">
@@ -85,18 +111,28 @@ export default function CatalogPage() {
         <ProductFilters
           categories={categories}
           selectedCategory={selectedCategory}
-          onCategoryChange={setSelectedCategory}
+          onCategoryChange={handleCategoryChange}
         />
 
-        {filteredProducts.length === 0 ? (
-          <div className="text-center py-12">
+        {selectedCategory === null ? (
+          <div className="text-center py-12 mt-8">
+            <p className="text-gray-400 text-lg">
+              Выберите категорию, чтобы увидеть товары
+            </p>
+          </div>
+        ) : loading ? (
+          <div className="text-center py-12 mt-8">
+            <p className="text-gray-400 text-lg">Загрузка товаров...</p>
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-12 mt-8">
             <p className="text-gray-400 text-lg">
               Товары не найдены в тёмном лесу...
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-            {filteredProducts.map((product, index) => (
+            {products.map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 20 }}

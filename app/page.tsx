@@ -73,8 +73,8 @@ export default function HomePage() {
       />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col justify-between overflow-hidden z-10 -mt-16 sm:-mt-20 pt-20 sm:pt-24 md:items-center md:justify-center">
-        <div className="relative z-10 max-w-7xl mx-auto px-4 py-12 sm:py-20 text-center flex-1 flex flex-col justify-between md:justify-center md:space-y-6">
+      <section className="relative min-h-screen flex flex-col justify-between overflow-hidden z-10 -mt-16 sm:-mt-20 pt-24 sm:pt-28 md:pt-20 md:items-center md:justify-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 py-8 sm:py-12 md:py-20 text-center flex-1 flex flex-col justify-between md:justify-center md:space-y-6">
           {/* Верхняя часть: текст */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -83,7 +83,7 @@ export default function HomePage() {
             className="space-y-6 md:space-y-6"
           >
             {/* Main Title */}
-            <h1 className="horror-text text-4xl sm:text-5xl md:text-7xl lg:text-9xl mb-6 text-horror-glow">
+            <h1 className="horror-text text-4xl sm:text-5xl md:text-7xl lg:text-9xl mb-4 sm:mb-6 text-horror-glow">
               <FlickerText>ЖИВЫЕ ЁЛКИ</FlickerText>
             </h1>
             
@@ -92,7 +92,7 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
-              className="text-xl sm:text-2xl md:text-3xl mb-4 text-gray-300"
+              className="text-xl sm:text-2xl md:text-3xl mb-3 sm:mb-4 text-gray-300"
             >
               Которые помнят каждую зиму
             </motion.p>
@@ -102,16 +102,16 @@ export default function HomePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7, duration: 0.8 }}
-              className="text-base sm:text-lg md:text-xl mb-12 text-gray-400 max-w-2xl mx-auto"
+              className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 md:mb-12 text-gray-400 max-w-2xl mx-auto px-2"
             >
               Каждая ёлка в нашем каталоге прошла через тёмные леса и готова стать частью вашего дома
             </motion.p>
           </motion.div>
           
           {/* Нижняя часть: иконки и кнопка (на мобильных) */}
-          <div className="flex flex-col justify-end md:block md:space-y-6">
+          <div className="flex flex-col justify-end md:block md:space-y-6 mt-4 sm:mt-6 md:mt-0">
             {/* Feature Icons */}
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12 mb-6 sm:mb-8 md:mb-12">
+            <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-12 mb-6 sm:mb-8 md:mb-12">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

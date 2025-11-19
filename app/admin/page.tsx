@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { TreePine, FolderTree, Package, TrendingUp, BookOpen, ArrowRight, HelpCircle } from 'lucide-react'
+import { TreePine, FolderTree, Package, TrendingUp, BookOpen, ArrowRight, HelpCircle, ShoppingBag } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { motion } from 'framer-motion'
 
@@ -170,6 +170,27 @@ export default function AdminDashboard() {
                     </h3>
                     <p className="text-gray-400 text-sm">
                       Управление товарами каталога
+                    </p>
+                  </div>
+                </div>
+                <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-horror-glow group-hover:translate-x-1 transition-all" />
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/admin/orders">
+            <Card hover className="group">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-horror-glow/20 group-hover:bg-horror-glow/30 rounded-lg flex items-center justify-center transition-colors">
+                    <ShoppingBag className="w-6 h-6 text-horror-glow" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-1">
+                      Заказы
+                    </h3>
+                    <p className="text-gray-400 text-sm">
+                      Просмотр и управление заказами
                     </p>
                   </div>
                 </div>
