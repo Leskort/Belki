@@ -109,7 +109,7 @@ export default function HomePage() {
           </motion.div>
           
           {/* Нижняя часть: иконки и кнопка (на мобильных) */}
-          <div className="flex flex-col justify-end md:block md:space-y-6 mt-4 sm:mt-6 md:mt-0 -translate-y-4 sm:-translate-y-6 md:translate-y-0">
+          <div className="flex flex-col justify-end md:block md:space-y-6 mt-4 sm:mt-6 md:mt-0 -translate-y-6 sm:-translate-y-8 md:translate-y-0">
             {/* Feature Icons */}
             <div className="flex flex-wrap justify-center gap-6 sm:gap-8 md:gap-12 mb-6 sm:mb-8 md:mb-12">
               <motion.div
