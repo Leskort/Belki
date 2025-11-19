@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <SafariFullscreen />
         <Providers>
-          <div className="min-h-screen bg-dark-50 text-white" style={{ minHeight: 'calc(var(--vh, 1vh) * 100)' }}>
+          <div className="min-h-screen bg-dark-50 text-white">
             <Navbar />
             <main>
               {children}

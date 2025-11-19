@@ -27,8 +27,6 @@
     /* Поддержка safe area для iPhone с вырезом */
     height: -webkit-fill-available;
     height: calc(var(--vh, 1vh) * 100);
-    /* Предотвращаем появление панели Safari */
-    overflow: hidden;
   }
 
   /* Скрытие панели Safari при прокрутке */
@@ -42,13 +40,6 @@
       height: -webkit-fill-available;
       height: calc(var(--vh, 1vh) * 100);
     }
-  }
-
-  /* Контейнер для прокрутки контента */
-  body > div {
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
 }
 
